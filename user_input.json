@@ -1,0 +1,63 @@
+
+{
+  "Model_1": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com",
+      "ramdon@gamil.com",
+      "ram@gamil.com"
+    ],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  },
+  "Model_1_Positive": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com",
+      "ramdon@gamil.com",
+      "ram@gamil.com"
+    ],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  },
+  "Model_1_Negative": {
+    "name": ["", "123", "@@@"],
+    "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
+    "address": ["", "!@#", "????"],
+    "city": ["", "Atlantis", "12345"]
+  },
+  "Model_1_Exclusion": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com",
+      "ramdon@gamil.com",
+      "ram@gamil.com"
+    ],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  },
+  "Model_2": {
+    "name": ["Raju", "Natarajan", "Kumar"],
+    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
+    "address": ["124596", "5748"],
+    "city": ["Chennai", "Kovai"]
+  },
+  "Model_2_Positive": {
+    "name": ["Raju", "Natarajan", "Kumar"],
+    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
+    "address": ["124596", "5748"],
+    "city": ["Chennai", "Kovai"]
+  },
+  "Model_2_Negative": {
+    "name": ["", "###", "000"],
+    "mail_id": ["bad@", "@bad.com", "bad.com"],
+    "address": ["", "!!!!", "xxxxx"],
+    "city": ["", "Nowhere", "123"]
+  },
+  "Model_2_Exclusion": {
+    "name": ["Raju", "Natarajan", "Kumar"],
+    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
+    "address": ["124596", "5748"],
+    "city": ["Chennai", "Kovai"]
+  }
+}
