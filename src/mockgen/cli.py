@@ -9,6 +9,11 @@ from .core import (
     build_indexed_records,
     build_output_payload,
     write_output_file,
+    load_master_template,
+    merge_brd_with_master,
+    generate_model_outputs,
+    generate_multiple_model_outputs,
+    write_enhanced_output_file,
 )
 
 
@@ -24,6 +29,12 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="user_input.json",
         help="Path to the input JSON file containing required fields.",
+    )
+    parser.add_argument(
+        "--master",
+        type=str,
+        default="master.json",
+        help="Path to the master template JSON file.",
     )
     parser.add_argument(
         "--init",
@@ -56,18 +67,87 @@ def parse_args() -> argparse.Namespace:
             "Counts are derived from the number of values per field, paired by index."
         ),
     )
+    parser.add_argument(
+        "--enhanced",
+        action="store_true",
+        help="Use enhanced mode: merge master template with BRD requirements.",
+    )
+    parser.add_argument(
+        "--models",
+        type=str,
+        nargs="+",
+        help="Specific models to generate output for (e.g., Model_1 Model_2).",
+    )
+    parser.add_argument(
+        "--output-format",
+        type=str,
+        choices=["single", "multiple", "split"],
+        default="single",
+        help="Output format: single file, multiple records in one file, or split files.",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
     config_path = Path(args.config)
+    master_path = Path(args.master)
 
     if args.init:
         ensure_config_file(config_path, overwrite=True)
         print(f"Wrote template to '{config_path}'. Edit it, then rerun.")
         return
 
+    if args.enhanced:
+        # Enhanced mode: use master template + BRD requirements
+        if not master_path.exists():
+            raise SystemExit(f"Master template file '{master_path}' not found.")
+        
+        if not config_path.exists():
+            raise SystemExit(f"BRD requirements file '{config_path}' not found.")
+        
+        # Load master template and BRD requirements
+        master_data = load_master_template(master_path)
+        brd_data = load_user_config(config_path)
+        
+        print(f"Loaded master template from '{master_path}'")
+        print(f"Loaded BRD requirements from '{config_path}' with {len(brd_data)} models")
+        
+        # Merge master template with BRD requirements
+        merged_config = merge_brd_with_master(master_data, brd_data)
+        print("Merged master template with BRD requirements")
+        
+        # Determine which models to process
+        if args.models:
+            selected_models = args.models
+            print(f"Selected models: {', '.join(selected_models)}")
+        else:
+            selected_models = [key for key in merged_config.keys() if not key.startswith("user_profile")]
+            print(f"Processing all models: {', '.join(selected_models)}")
+        
+        # Generate outputs based on format
+        if args.output_format == "split":
+            # Generate separate files for each model
+            for model in selected_models:
+                if model in merged_config:
+                    output = generate_model_outputs(merged_config, [model])
+                    outfile = write_enhanced_output_file(output, file_tag=f"_{model}")
+                    print(f"Generated: {outfile}")
+        elif args.output_format == "multiple":
+            # Generate multiple records in one file
+            outputs = generate_multiple_model_outputs(merged_config, selected_models, args.count)
+            for i, output in enumerate(outputs, start=1):
+                outfile = write_enhanced_output_file(output, file_tag=f"_batch_{i}")
+                print(f"Generated: {outfile}")
+        else:
+            # Single output file
+            output = generate_model_outputs(merged_config, selected_models)
+            outfile = write_enhanced_output_file(output)
+            print(f"Generated: {outfile}")
+        
+        return
+
+    # Original functionality
     if not config_path.exists():
         ensure_config_file(config_path, overwrite=False)
         raise SystemExit(

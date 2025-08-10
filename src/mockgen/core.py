@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 CONFIG_FILE = Path("user_input.json")
+MASTER_TEMPLATE_FILE = Path("master.json")
 OUTPUT_DIR = Path("mock_outputs")
 REQUIRED_FIELDS: List[str] = ["name", "mail_id", "address", "city"]
 
@@ -31,6 +32,96 @@ def ensure_config_file(path: Path, overwrite: bool = False) -> None:
     }
     with path.open("w", encoding="utf-8") as f:
         json.dump(template, f, indent=2, ensure_ascii=False)
+
+
+def load_master_template(path: Path) -> Dict[str, Any]:
+    """Load the master template JSON file."""
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data
+    except (json.JSONDecodeError, OSError) as exc:
+        raise SystemExit(
+            f"Could not read master template from '{path}': {exc}. Ensure the file exists and is valid JSON."
+        )
+
+
+def merge_brd_with_master(master_data: Dict[str, Any], brd_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Merge BRD requirements with master template to create enhanced configuration."""
+    merged = master_data.copy()
+    
+    # For each model in BRD, merge with master template
+    for model_key, model_data in brd_data.items():
+        if model_key not in merged:
+            merged[model_key] = {}
+        
+        # Start with master template fields as base
+        if "user_profile" in master_data:
+            for field, values in master_data["user_profile"].items():
+                merged[model_key][field] = values
+        
+        # Override/add BRD-specific fields
+        for field, values in model_data.items():
+            merged[model_key][field] = values
+    
+    return merged
+
+
+def generate_model_outputs(merged_config: Dict[str, Any], selected_models: List[str] = None) -> Dict[str, Any]:
+    """Generate output JSON for selected models based on merged configuration."""
+    if selected_models is None:
+        # If no models specified, use all models from BRD
+        selected_models = [key for key in merged_config.keys() if not key.startswith("user_profile")]
+    
+    outputs = {}
+    
+    for model in selected_models:
+        if model not in merged_config:
+            continue
+            
+        model_data = merged_config[model]
+        model_output = {}
+        
+        # Generate records for each field
+        for field, values in model_data.items():
+            if isinstance(values, list) and values:
+                # Randomly select from available values
+                model_output[field] = random.choice(values)
+            elif isinstance(values, str):
+                # Single value, use as is
+                model_output[field] = values
+            else:
+                # Fallback to empty string if no valid values
+                model_output[field] = ""
+        
+        outputs[model] = model_output
+    
+    return outputs
+
+
+def generate_multiple_model_outputs(merged_config: Dict[str, Any], selected_models: List[str] = None, count: int = 1) -> List[Dict[str, Any]]:
+    """Generate multiple output JSONs for selected models."""
+    outputs_list = []
+    
+    for i in range(count):
+        output = generate_model_outputs(merged_config, selected_models)
+        outputs_list.append(output)
+    
+    return outputs_list
+
+
+def write_enhanced_output_file(payload: Dict[str, Any], file_tag: Optional[str] = None) -> Path:
+    """Write enhanced output to file with timestamp."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S_%fZ")
+    suffix = file_tag or ""
+    outfile = OUTPUT_DIR / f"enhanced_output_{ts}{suffix}.json"
+    
+    with outfile.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    
+    return outfile
 
 
 def _to_choice_list(value: Any) -> List[str]:

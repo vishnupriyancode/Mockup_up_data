@@ -16,7 +16,7 @@ REQUIRED_FIELDS: List[str] = ["name", "mail_id", "address", "city"]
 def ensure_config_file(path: Path, overwrite: bool = False) -> None:
     if path.exists() and not overwrite:
         return
-    # Template with multiple edits
+    # Template with multiple edits++++
     template = {
         "Edit_1": {
             "name": "Vishnu,Priyan",
@@ -238,6 +238,14 @@ def parse_args() -> argparse.Namespace:
             "Counts are derived from the number of values per field, paired by index."
         ),
     )
+    parser.add_argument(
+        "--single-file",
+        action="store_true",
+        help=(
+            "When used with --model, combine all scenarios into a single output file "
+            "instead of creating separate files for each record."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -271,10 +279,18 @@ def main() -> None:
             raise SystemExit(
                 f"No records could be built for section '{args.model}'. Ensure all required fields have values."
             )
-        for i, record in enumerate(records, start=1):
-            payload = {f"{args.model}_output_{i}": record}
-            outfile = write_output_file(payload, file_tag=f"_{i}")
+        if args.single_file:
+            all_records = []
+            for i, record in enumerate(records, start=1):
+                all_records.append({f"{args.model}_output_{i}": record})
+            payload = {"all_records": all_records}
+            outfile = write_output_file(payload)
             print(f"Generated: {outfile}")
+        else:
+            for i, record in enumerate(records, start=1):
+                payload = {f"{args.model}_output_{i}": record}
+                outfile = write_output_file(payload, file_tag=f"_{i}")
+                print(f"Generated: {outfile}")
         return
     
     if args.count > 1 and args.split:

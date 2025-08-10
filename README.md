@@ -1,6 +1,6 @@
 # Mock Data Generator
 
-This tool generates mock data by randomly selecting values from multiple edit configurations.
+This tool generates mock data by randomly selecting values from multiple edit configurations. It supports both basic random selection mode and enhanced mode with master templates.
 
 ## Features
 
@@ -9,12 +9,146 @@ This tool generates mock data by randomly selecting values from multiple edit co
 - **Flexible Output**: Generate single or multiple outputs, with option to split into separate files
 - **Comma-separated Values**: Support for comma-separated values in strings
 - **Model/Section Mode**: Provide top-level sections like `Model_1`, `Model_2` and generate one JSON per paired record using `--model`
+- **Enhanced Mode**: Merge master template with BRD requirements for sophisticated data generation
+- **Multiple Output Formats**: Single file, multiple records, or split files
 
-## Usage
+## Quick Start Commands
 
-### 1. Configuration File (`user_input.json`)
+### 1. Basic Random Generation (No Installation Required)
 
-The configuration file may contain multiple sections (either `Edit_X` or custom like `Model_1`, `Model_2`), each with the required fields:
+```bash
+# Generate 1 random output
+python generate_mock_output.py
+
+# Generate 5 random outputs in a single file
+python generate_mock_output.py --count 5
+
+# Generate 3 random outputs, each in a separate file
+python generate_mock_output.py --count 3 --split
+
+# Generate records for a specific model section
+python generate_mock_output.py --model Model_1
+```
+
+### 2. Enhanced Mode with Master Template
+
+```bash
+# Generate output for all models using master template
+python generate_mock_output.py --enhanced
+
+# Generate output for specific models
+python generate_mock_output.py --enhanced --models Model_1 Model_2
+
+# Generate multiple outputs in split files
+python generate_mock_output.py --enhanced --output-format split
+
+# Generate multiple records in one file
+python generate_mock_output.py --enhanced --output-format multiple --count 3
+```
+
+### 3. CLI Tool (After Installation)
+
+```bash
+# Install the tool
+python -m pip install -e .
+
+# Use the CLI commands
+mockgen --count 3 --split
+mockgen --enhanced --models Model_1 Model_2
+mockgen --enhanced --output-format split
+```
+
+## Complete Command Reference
+
+### Basic Mode Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `--config <path>` | Path to input JSON file | `--config my_config.json` |
+| `--count <number>` | Number of random outputs | `--count 5` |
+| `--split` | Split multiple outputs into separate files | `--count 3 --split` |
+| `--init` | Create template input JSON file | `--init` |
+| `--model <section>` | Generate records for specific section | `--model Model_1` |
+
+### Enhanced Mode Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `--enhanced` | Enable enhanced mode with master template | `--enhanced` |
+| `--master <path>` | Path to master template JSON | `--master template.json` |
+| `--models <list>` | Specific models to generate | `--models Model_1 Model_2` |
+| `--output-format <type>` | Output format type | `--output-format split` |
+
+### Output Format Options
+
+| Format | Description | Command |
+|--------|-------------|---------|
+| `single` | Single output file (default) | `--output-format single` |
+| `multiple` | Multiple records in one file | `--output-format multiple --count 3` |
+| `split` | Separate file for each output | `--output-format split` |
+
+## Usage Scenarios
+
+### Scenario 1: Basic Random Generation
+Generate random data from edit sections:
+
+```bash
+# Single random output
+python generate_mock_output.py
+
+# Multiple random outputs
+python generate_mock_output.py --count 5
+
+# Split into separate files
+python generate_mock_output.py --count 3 --split
+```
+
+### Scenario 2: Model-Specific Generation
+Generate paired records for a specific model:
+
+```bash
+# Generate records for Model_1
+python generate_mock_output.py --model Model_1
+
+# This creates one file per record based on field values
+# If Model_1 has name=[A,B,C], mail_id=[m1,m2], address=[a1,a2], city=[c1]
+# Generates 3 files with paired values:
+# File 1: A, m1, a1, c1
+# File 2: B, m2, a2, c1  
+# File 3: C, m1, a1, c1
+```
+
+### Scenario 3: Enhanced Mode with Master Template
+Use master template + BRD requirements:
+
+```bash
+# Generate for all models
+python generate_mock_output.py --enhanced
+
+# Generate for specific models
+python generate_mock_output.py --enhanced --models Model_1 Model_2
+
+# Generate split files for each model
+python generate_mock_output.py --enhanced --output-format split
+
+# Generate multiple iterations
+python generate_mock_output.py --enhanced --output-format multiple --count 3
+```
+
+### Scenario 4: Template Initialization
+Create configuration files:
+
+```bash
+# Create template user_input.json
+python generate_mock_output.py --init
+
+# Create with custom path
+python generate_mock_output.py --init --config my_config.json
+```
+
+## Configuration Files
+
+### 1. Basic Configuration (`user_input.json`)
 
 ```json
 {
@@ -33,7 +167,7 @@ The configuration file may contain multiple sections (either `Edit_X` or custom 
 }
 ```
 
-Or with custom model sections:
+### 2. Model-Based Configuration
 
 ```json
 {
@@ -52,127 +186,91 @@ Or with custom model sections:
 }
 ```
 
-### 2. Running the Generator
-
-#### Basic Usage (no install)
-```bash
-# Generate 1 random output
-python generate_mock_output.py
-
-# Generate 5 random outputs in a single file
-python generate_mock_output.py --count 5
-
-# Generate 3 random outputs, each in a separate file
-python generate_mock_output.py --count 3 --split
-```
-
-#### Install and use as a CLI
-
-```bash
-# Editable install for development
-python -m pip install -e .
-
-# Then run
-mockgen --count 3 --split
-```
-
-#### Command Line Options
-
-- `--config <path>`: Path to the input JSON file (default: `user_input.json`)
-- `--count <number>`: Number of random outputs to generate (default: 1)
-- `--split`: If set with `--count > 1`, writes each output to its own JSON file
-- `--init`: Create/overwrite a template input JSON file
-- `--model <section>`: Generate records for a specific section (e.g., `Model_1`). Values are paired by index per field, using round-robin for shorter lists. The total number of files equals the maximum list length across the required fields.
-
-### 3. Output Format
-
-The generated output will contain randomly selected values from the edit sections:
+### 3. Master Template (`master.json`)
 
 ```json
 {
-  "Edit_1_output_1": {
-    "name": "Priyan",
-    "mail_id": "Vishnupriyannatarajan@gmail.com",
-    "address": "123456",
-    "city": "Hyderabad"
-  },
-  "Edit_2_output_2": {
-    "name": "Raju",
-    "mail_id": "Ran@gmail.com",
-    "address": "5748",
-    "city": "Kovai"
+  "user_profile": {
+    "first_name": ["John"],
+    "last_name": ["Smith"],
+    "email": ["john.smith@email.com"],
+    "phone": ["+1-555-0101"],
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": ["Vishnupriyannatarajan@gmail.com"],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad"]
   }
 }
 ```
 
+## Demo and Testing
+
+### Run Demo Script
+```bash
+python demo_enhanced_system.py
+```
+
+### Test Random Selection
+```bash
+python test_random_selection.py
+```
+
+## File Structure
+
+```
+Mockup_up_data/
+├── user_input.json          # BRD requirements/configuration
+├── master.json              # Master template for enhanced mode
+├── README.md                # This file
+├── pyproject.toml          # Package configuration
+├── generate_mock_output.py  # Local runner (no install needed)
+├── demo_enhanced_system.py  # Enhanced mode demonstration
+├── test_random_selection.py # Random selection testing
+├── src/
+│   └── mockgen/
+│       ├── __init__.py
+│       ├── core.py          # Core library functions
+│       └── cli.py           # CLI entrypoint
+└── mock_outputs/            # Generated output files
+    └── output_*.json
+```
+
 ## How It Works
 
-1. **Load Configuration**: Reads the `user_input.json` file and parses the edit sections
-2. **Random Edit Selection**: For each output, randomly selects one of the available edits
-3. **Random Value Selection**: Within the selected edit, randomly selects one value from each field
-4. **Output Generation**: Creates the final JSON output with the selected values
+### Basic Mode
+1. **Load Configuration**: Reads the input JSON file and parses edit sections
+2. **Random Edit Selection**: For each output, randomly selects one available edit
+3. **Random Value Selection**: Within selected edit, randomly selects one value from each field
+4. **Output Generation**: Creates final JSON with selected values
+
+### Enhanced Mode
+1. **Load Templates**: Reads master template and BRD requirements
+2. **Merge Configuration**: Combines master template with BRD-specific values
+3. **Model Processing**: Generates output for selected models using merged configuration
+4. **Output Generation**: Creates enhanced JSON with template + BRD data
 
 ## Examples
 
-### Example 1: Single Output
+### Example 1: Basic Single Output
 ```bash
 python generate_mock_output.py
 ```
 Output: `mock_outputs/output_20250808_051907_760451Z.json`
 
-### Example 2: Multiple Outputs
+### Example 2: Enhanced Mode for All Models
 ```bash
-python generate_mock_output.py --count 3
+python generate_mock_output.py --enhanced
 ```
-Generates 3 random selections in a single file.
+Generates output using master template + BRD requirements for all models.
 
-### Example 3: Split Outputs
+### Example 3: Enhanced Mode for Specific Models
 ```bash
-python generate_mock_output.py --count 2 --split
+python generate_mock_output.py --enhanced --models Model_1 Model_2 --output-format split
 ```
-Generates 2 separate files, each with one random selection.
+Generates separate files for Model_1 and Model_2 using enhanced mode.
 
-### Example 4: Model/Section Mode (index-paired records)
-
-```
-python generate_mock_output.py --model Model_1
-```
-
-If `Model_1` has values like `name=[A,B,C]`, `mail_id=[m1,m2]`, `address=[a1,a2]`, `city=[c1]`, this generates 3 files:
-
-1. A, m1, a1, c1
-2. B, m2, a2, c1
-3. C, m1, a1, c1
-
-<!-- Scenario generation is not currently implemented. -->
-
-## Testing
-
-Run the test script to see how the random selection works:
-
+### Example 4: Multiple Iterations
 ```bash
-python test_random_selection.py
+python generate_mock_output.py --enhanced --output-format multiple --count 5
 ```
-
-This will show:
-- Available options for each edit
-- 5 random selections demonstrating the functionality
-
-## File Structure
-
-```
-Mockup_up_data - Copy/
-├── user_input.json
-├── README.md
-├── pyproject.toml
-├── .gitignore
-├── generate_mock_output.py    # Thin wrapper to run local CLI without install
-├── test_random_selection.py   # Demo script
-├── src/
-│   └── mockgen/
-│       ├── __init__.py
-│       ├── core.py            # Library functions
-│       └── cli.py             # CLI entrypoint (also used by `mockgen` script)
-└── mock_outputs/              # Generated files
-    └── output_*.json
-```
+Generates 5 iterations of all models in one file.
