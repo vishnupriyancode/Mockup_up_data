@@ -17,18 +17,24 @@ def ensure_config_file(path: Path, overwrite: bool = False) -> None:
     if path.exists() and not overwrite:
         return
     template = {
-        "Edit_1": {
-            "name": "Vishnu,Priyan",
-            "mail_id": "Vishnupriyannatarajan@gmail.com, ramdon@gamil.com",
-            "address": "123456,12345",
-            "city": "Hyderabad,Chennai",
+        "Model_1": {
+            "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
+            "address": ["123456", "12345", "654321", "123"],
+            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
         },
-        "Edit_2": {
-            "name": "Raju,Natarajan",
-            "mail_id": "Vishnupriyan@gmail.com, Ran@gmail.com",
-            "address": "124596,5748",
-            "city": "Chennai,Kovai",
+        "Model_1_Positive": {
+            "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
+            "address": ["123456", "12345", "654321", "123"],
+            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
         },
+        "Model_1_Negative": {
+            "name": ["", "123", "@@@"],
+            "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
+            "address": ["", "!@#", "????"],
+            "city": ["", "Atlantis", "12345"]
+        }
     }
     with path.open("w", encoding="utf-8") as f:
         json.dump(template, f, indent=2, ensure_ascii=False)
@@ -44,6 +50,109 @@ def load_master_template(path: Path) -> Dict[str, Any]:
         raise SystemExit(
             f"Could not read master template from '{path}': {exc}. Ensure the file exists and is valid JSON."
         )
+
+
+def load_user_config(path: Path) -> Dict[str, Dict[str, List[str]]]:
+    """Load user configuration with improved model handling."""
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        raise SystemExit(
+            f"Could not read configuration from '{path}': {exc}. Edit the file and rerun."
+        )
+
+    # Handle the new model-based structure
+    if any(key.startswith("Model_") for key in data.keys()):
+        parsed: Dict[str, Dict[str, List[str]]] = {}
+        for model_key, model_data in data.items():
+            if not isinstance(model_data, dict):
+                continue
+            parsed[model_key] = {}
+            for field, values in model_data.items():
+                if isinstance(values, list):
+                    parsed[model_key][field] = values
+                elif isinstance(values, str):
+                    # Convert comma-separated string to list
+                    parsed[model_key][field] = [v.strip() for v in values.split(",") if v.strip()]
+                else:
+                    parsed[model_key][field] = [str(values)]
+        return parsed
+
+    # Fallback to old format handling
+    if any(key.startswith("Edit_") for key in data.keys()):
+        parsed: Dict[str, Dict[str, List[str]]] = {}
+        for section_key, section_data in data.items():
+            if not section_key.startswith("Edit_"):
+                continue
+            parsed[section_key] = {}
+            missing_or_empty: List[str] = []
+            for field in REQUIRED_FIELDS:
+                if field not in section_data:
+                    missing_or_empty.append(field)
+                    continue
+                choices = _to_choice_list(section_data[field])
+                if not choices:
+                    missing_or_empty.append(field)
+                    continue
+                parsed[section_key][field] = choices
+            if missing_or_empty:
+                raise SystemExit(
+                    f"Section '{section_key}' is missing required non-empty fields: "
+                    + ", ".join(missing_or_empty)
+                    + f". Please edit '{path}' and rerun."
+                )
+        if not parsed:
+            raise SystemExit(f"No valid 'Edit_X' sections found in '{path}'.")
+        return parsed
+
+    # Handle flat structure
+    if all(isinstance(v, dict) for v in data.values()):
+        parsed = {}
+        for section_key, section_data in data.items():
+            if not isinstance(section_data, dict):
+                continue
+            missing_or_empty: List[str] = []
+            normalized_section: Dict[str, List[str]] = {}
+            for field in REQUIRED_FIELDS:
+                if field not in section_data:
+                    missing_or_empty.append(field)
+                    continue
+                choices = _to_choice_list(section_data[field])
+                if not choices:
+                    missing_or_empty.append(field)
+                    continue
+                normalized_section[field] = choices
+            if missing_or_empty:
+                raise SystemExit(
+                    f"Section '{section_key}' is missing required non-empty fields: "
+                    + ", ".join(missing_or_empty)
+                    + f". Please edit '{path}' and rerun."
+                )
+            parsed[section_key] = normalized_section
+        if not parsed:
+            raise SystemExit(f"No valid sections found in '{path}'.")
+        return parsed
+
+    # Handle single section
+    missing_or_empty: List[str] = []
+    parsed: Dict[str, Dict[str, List[str]]] = {"Edit_1": {}}
+    for key in REQUIRED_FIELDS:
+        if key not in data:
+            missing_or_empty.append(key)
+            continue
+        choices = _to_choice_list(data[key])
+        if not choices:
+            missing_or_empty.append(key)
+            continue
+        parsed["Edit_1"][key] = choices
+    if missing_or_empty:
+        raise SystemExit(
+            "Configuration is missing required non-empty fields: "
+            + ", ".join(missing_or_empty)
+            + f". Please edit '{path}' and rerun."
+        )
+    return parsed
 
 
 def merge_brd_with_master(master_data: Dict[str, Any], brd_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -110,12 +219,44 @@ def generate_multiple_model_outputs(merged_config: Dict[str, Any], selected_mode
     return outputs_list
 
 
+def generate_model_records(model_data: Dict[str, List[str]], count: int = 1) -> List[Dict[str, str]]:
+    """Generate multiple records for a specific model."""
+    records = []
+    
+    for i in range(count):
+        record = {}
+        for field, values in model_data.items():
+            if isinstance(values, list) and values:
+                record[field] = random.choice(values)
+            elif isinstance(values, str):
+                record[field] = values
+            else:
+                record[field] = ""
+        records.append(record)
+    
+    return records
+
+
 def write_enhanced_output_file(payload: Dict[str, Any], file_tag: Optional[str] = None) -> Path:
     """Write enhanced output to file with timestamp."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S_%fZ")
     suffix = file_tag or ""
     outfile = OUTPUT_DIR / f"enhanced_output_{ts}{suffix}.json"
+    
+    with outfile.open("w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    
+    return outfile
+
+
+def write_model_output_file(payload: Dict[str, Any], model_name: str, file_tag: Optional[str] = None) -> Path:
+    """Write model-specific output to file with timestamp."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S_%fZ")
+    suffix = file_tag or ""
+    outfile = OUTPUT_DIR / f"{model_name}_output_{ts}{suffix}.json"
     
     with outfile.open("w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
@@ -132,88 +273,6 @@ def _to_choice_list(value: Any) -> List[str]:
     else:
         items = [str(value).strip()]
     return [v for v in items if v]
-
-
-def load_user_config(path: Path) -> Dict[str, Dict[str, List[str]]]:
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            data = json.load(f)
-    except (json.JSONDecodeError, OSError) as exc:
-        raise SystemExit(
-            f"Could not read configuration from '{path}': {exc}. Edit the file and rerun."
-        )
-
-    if any(key.startswith("Edit_") for key in data.keys()):
-        parsed: Dict[str, Dict[str, List[str]]] = {}
-        for section_key, section_data in data.items():
-            if not section_key.startswith("Edit_"):
-                continue
-            parsed[section_key] = {}
-            missing_or_empty: List[str] = []
-            for field in REQUIRED_FIELDS:
-                if field not in section_data:
-                    missing_or_empty.append(field)
-                    continue
-                choices = _to_choice_list(section_data[field])
-                if not choices:
-                    missing_or_empty.append(field)
-                    continue
-                parsed[section_key][field] = choices
-            if missing_or_empty:
-                raise SystemExit(
-                    f"Section '{section_key}' is missing required non-empty fields: "
-                    + ", ".join(missing_or_empty)
-                    + f". Please edit '{path}' and rerun."
-                )
-        if not parsed:
-            raise SystemExit(f"No valid 'Edit_X' sections found in '{path}'.")
-        return parsed
-
-    if all(isinstance(v, dict) for v in data.values()):
-        parsed = {}
-        for section_key, section_data in data.items():
-            if not isinstance(section_data, dict):
-                continue
-            missing_or_empty: List[str] = []
-            normalized_section: Dict[str, List[str]] = {}
-            for field in REQUIRED_FIELDS:
-                if field not in section_data:
-                    missing_or_empty.append(field)
-                    continue
-                choices = _to_choice_list(section_data[field])
-                if not choices:
-                    missing_or_empty.append(field)
-                    continue
-                normalized_section[field] = choices
-            if missing_or_empty:
-                raise SystemExit(
-                    f"Section '{section_key}' is missing required non-empty fields: "
-                    + ", ".join(missing_or_empty)
-                    + f". Please edit '{path}' and rerun."
-                )
-            parsed[section_key] = normalized_section
-        if not parsed:
-            raise SystemExit(f"No valid sections found in '{path}'.")
-        return parsed
-
-    missing_or_empty: List[str] = []
-    parsed: Dict[str, Dict[str, List[str]]] = {"Edit_1": {}}
-    for key in REQUIRED_FIELDS:
-        if key not in data:
-            missing_or_empty.append(key)
-            continue
-        choices = _to_choice_list(data[key])
-        if not choices:
-            missing_or_empty.append(key)
-            continue
-        parsed["Edit_1"][key] = choices
-    if missing_or_empty:
-        raise SystemExit(
-            "Configuration is missing required non-empty fields: "
-            + ", ".join(missing_or_empty)
-            + f". Please edit '{path}' and rerun."
-        )
-    return parsed
 
 
 def _select_random_record_from_edit(edit_options: Dict[str, List[str]]) -> Dict[str, str]:

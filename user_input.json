@@ -35,29 +35,4 @@
     ],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
-  },
-  "Model_2": {
-    "name": ["Raju", "Natarajan", "Kumar"],
-    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
-    "address": ["124596", "5748"],
-    "city": ["Chennai", "Kovai"]
-  },
-  "Model_2_Positive": {
-    "name": ["Raju", "Natarajan", "Kumar"],
-    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
-    "address": ["124596", "5748"],
-    "city": ["Chennai", "Kovai"]
-  },
-  "Model_2_Negative": {
-    "name": ["", "###", "000"],
-    "mail_id": ["bad@", "@bad.com", "bad.com"],
-    "address": ["", "!!!!", "xxxxx"],
-    "city": ["", "Nowhere", "123"]
-  },
-  "Model_2_Exclusion": {
-    "name": ["Raju", "Natarajan", "Kumar"],
-    "mail_id": ["Vishnupriyan@gmail.com", "Ran@gmail.com"],
-    "address": ["124596", "5748"],
-    "city": ["Chennai", "Kovai"]
-  }
-}
+  }}

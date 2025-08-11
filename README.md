@@ -1,192 +1,119 @@
-# Mock Data Generator
+# Enhanced Mock Generation System
 
-This tool generates mock data by randomly selecting values from multiple edit configurations. It supports both basic random selection mode and enhanced mode with master templates.
+A comprehensive system for generating mock JSON outputs with support for probability-based scenarios, master template integration, and flexible output formats. Supports both legacy `Edit_X` format and new `Model_X` format.
 
-## Features
+## 🚀 Features
 
-- **Multiple Edits Support**: Define multiple edit sections (Edit_1, Edit_2, etc.) with different sets of values
-- **Random Selection**: Randomly selects values from each edit section
-- **Flexible Output**: Generate single or multiple outputs, with option to split into separate files
-- **Comma-separated Values**: Support for comma-separated values in strings
-- **Model/Section Mode**: Provide top-level sections like `Model_1`, `Model_2` and generate one JSON per paired record using `--model`
-- **Enhanced Mode**: Merge master template with BRD requirements for sophisticated data generation
-- **Multiple Output Formats**: Single file, multiple records, or split files
+- **Master Template Integration**: Uses `master.json` as a base template and merges it with user input
+- **Probability-Based Generation**: Generate positive, negative, and exclusion probability scenarios
+- **Multiple Model Support**: Handles various model types (Model_1, Model_1_Positive, Model_1_Negative, etc.)
+- **Flexible Output Formats**: Single file, multiple records, or split files
+- **Backward Compatibility**: Supports both new Model_X format and legacy Edit_X format
+- **CLI Interface**: Easy-to-use command-line interface with various options
+- **Standalone Probability Generator**: Specialized tool for probability-based outputs
 
-## Quick Start Commands
+## 📁 File Structure
 
-### 1. Basic Random Generation (No Installation Required)
-
-```bash
-# Generate 1 random output
-python generate_mock_output.py
-
-# Generate 5 random outputs in a single file
-python generate_mock_output.py --count 5
-
-# Generate 3 random outputs, each in a separate file
-python generate_mock_output.py --count 3 --split
-
-# Generate records for a specific model section
-python generate_mock_output.py --model Model_1
+```
+Mockup_up_data/
+├── user_input.json                    # User-defined models and data
+├── master.json                       # Master template structure
+├── src/mockgen/                     # Core system modules
+│   ├── core.py                      # Main functionality
+│   └── cli.py                       # Command-line interface
+├── mock_outputs/                    # Generated output files
+├── demo_enhanced_system.py          # Demonstration script
+└── generate_probability_outputs.py  # Probability generator
 ```
 
-### 2. Enhanced Mode with Master Template
+## 🎯 Quick Start
+
+### Enhanced System (Recommended)
 
 ```bash
-# Generate output for all models using master template
-python generate_mock_output.py --enhanced
+# Generate enhanced output for all models
+python -m src.mockgen.cli --enhanced
 
-# Generate output for specific models
-python generate_mock_output.py --enhanced --models Model_1 Model_2
+# Generate output for specific model
+python -m src.mockgen.cli --enhanced --model Model_1
 
-# Generate multiple outputs in split files
-python generate_mock_output.py --enhanced --output-format split
+# Generate multiple records
+python -m src.mockgen.cli --model Model_1 --count 5
 
-# Generate multiple records in one file
-python generate_mock_output.py --enhanced --output-format multiple --count 3
+# Generate split output files
+python -m src.mockgen.cli --enhanced --output-format split
 ```
 
-### 3. CLI Tool (After Installation)
+### Probability Generator
 
 ```bash
-# Install the tool
-python -m pip install -e .
+# Generate all probability types for all models
+python generate_probability_outputs.py --all
 
-# Use the CLI commands
-mockgen --count 3 --split
-mockgen --enhanced --models Model_1 Model_2
-mockgen --enhanced --output-format split
+# Generate only positive probabilities
+python generate_probability_outputs.py --positive
+
+# Generate negative probabilities for specific model
+python generate_probability_outputs.py --negative --model Model_1
+
+# Generate multiple records
+python generate_probability_outputs.py --all --count 5
+
+# List available models
+python generate_probability_outputs.py --list
 ```
 
-## Complete Command Reference
+## 📋 Input File Format
 
-### Basic Mode Commands
+### user_input.json
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `--config <path>` | Path to input JSON file | `--config my_config.json` |
-| `--count <number>` | Number of random outputs | `--count 5` |
-| `--split` | Split multiple outputs into separate files | `--count 3 --split` |
-| `--init` | Create template input JSON file | `--init` |
-| `--model <section>` | Generate records for specific section | `--model Model_1` |
+The system supports two formats:
 
-### Enhanced Mode Commands
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `--enhanced` | Enable enhanced mode with master template | `--enhanced` |
-| `--master <path>` | Path to master template JSON | `--master template.json` |
-| `--models <list>` | Specific models to generate | `--models Model_1 Model_2` |
-| `--output-format <type>` | Output format type | `--output-format split` |
-
-### Output Format Options
-
-| Format | Description | Command |
-|--------|-------------|---------|
-| `single` | Single output file (default) | `--output-format single` |
-| `multiple` | Multiple records in one file | `--output-format multiple --count 3` |
-| `split` | Separate file for each output | `--output-format split` |
-
-## Usage Scenarios
-
-### Scenario 1: Basic Random Generation
-Generate random data from edit sections:
-
-```bash
-# Single random output
-python generate_mock_output.py
-
-# Multiple random outputs
-python generate_mock_output.py --count 5
-
-# Split into separate files
-python generate_mock_output.py --count 3 --split
+#### Model_X Format (Recommended)
+```json
+{
+  "Model_1": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  },
+  "Model_1_Positive": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  },
+  "Model_1_Negative": {
+    "name": ["", "123", "@@@"],
+    "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
+    "address": ["", "!@#", "????"],
+    "city": ["", "Atlantis", "12345"]
+  },
+  "Model_1_Exclusion": {
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+  }
+}
 ```
 
-### Scenario 2: Model-Specific Generation
-Generate paired records for a specific model:
-
-```bash
-# Generate records for Model_1
-python generate_mock_output.py --model Model_1
-
-# This creates one file per record based on field values
-# If Model_1 has name=[A,B,C], mail_id=[m1,m2], address=[a1,a2], city=[c1]
-# Generates 3 files with paired values:
-# File 1: A, m1, a1, c1
-# File 2: B, m2, a2, c1  
-# File 3: C, m1, a1, c1
-```
-
-### Scenario 3: Enhanced Mode with Master Template
-Use master template + BRD requirements:
-
-```bash
-# Generate for all models
-python generate_mock_output.py --enhanced
-
-# Generate for specific models
-python generate_mock_output.py --enhanced --models Model_1 Model_2
-
-# Generate split files for each model
-python generate_mock_output.py --enhanced --output-format split
-
-# Generate multiple iterations
-python generate_mock_output.py --enhanced --output-format multiple --count 3
-```
-
-### Scenario 4: Template Initialization
-Create configuration files:
-
-```bash
-# Create template user_input.json
-python generate_mock_output.py --init
-
-# Create with custom path
-python generate_mock_output.py --init --config my_config.json
-```
-
-## Configuration Files
-
-### 1. Basic Configuration (`user_input.json`)
-
+#### Legacy Edit_X Format
 ```json
 {
   "Edit_1": {
     "name": "Vishnu,Priyan",
-    "mail_id": "Vishnupriyannatarajan@gmail.com, ramdon@gamil.com",
+    "mail_id": "Vishnupriyannatarajan@gmail.com,ramdon@gamil.com",
     "address": "123456,12345",
     "city": "Hyderabad,Chennai"
-  },
-  "Edit_2": {
-    "name": "Raju,Natarajan",
-    "mail_id": "Vishnupriyan@gmail.com, Ran@gmail.com",
-    "address": "124596,5748",
-    "city": "Chennai,Kovai"
   }
 }
 ```
 
-### 2. Model-Based Configuration
+### master.json
 
-```json
-{
-  "Model_1": {
-    "name": ["Vishnu","Priyan"],
-    "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
-    "address": ["123456","12345"],
-    "city": ["Hyderabad","Chennai"]
-  },
-  "Model_2": {
-    "name": "Raju,Natarajan",
-    "mail_id": "Vishnupriyan@gmail.com, Ran@gmail.com",
-    "address": "124596,5748",
-    "city": "Chennai,Kovai"
-  }
-}
-```
-
-### 3. Master Template (`master.json`)
+The master template provides the base structure:
 
 ```json
 {
@@ -195,82 +122,315 @@ python generate_mock_output.py --init --config my_config.json
     "last_name": ["Smith"],
     "email": ["john.smith@email.com"],
     "phone": ["+1-555-0101"],
+    "date_of_birth": ["1990-01-15"],
+    "street_address": ["123 Main Street"],
     "name": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com"],
     "address": ["123456", "12345", "654321", "123"],
-    "city": ["Hyderabad"]
+    "city": ["Hyderabad"],
+    "state": ["NY"],
+    "zip_code": ["10001"],
+    "country": ["United States"]
   }
 }
 ```
 
-## Demo and Testing
+## 🎮 CLI Options
 
-### Run Demo Script
+### Enhanced System Options
+- `--config`: Path to user input file (default: user_input.json)
+- `--master`: Path to master template file (default: master.json)
+- `--init`: Create template input file and exit
+- `--count`: Number of outputs to generate (default: 1)
+- `--enhanced`: Use enhanced mode with master template
+- `--model`: Generate output for specific model
+- `--models`: Generate output for multiple specific models
+- `--output-format`: Output format (single, multiple, split)
+- `--split`: Write each output to separate file
+- `--legacy`: Force legacy mode for backward compatibility
+
+### Probability Generator Options
+- `--all`: Generate all probability types (positive, negative, exclusion)
+- `--positive`: Generate only positive probability outputs
+- `--negative`: Generate only negative probability outputs
+- `--exclusion`: Generate only exclusion probability outputs
+- `--model`: Generate outputs for specific model only
+- `--count`: Number of records to generate per probability type
+- `--list`: List available models and their probability types
+- `--config`: Path to configuration file (default: user_input.json)
+- `--output-dir`: Output directory for generated files
+
+## 📊 Output Examples
+
+### Enhanced System Output
+When using `--enhanced`, the output follows the master template structure:
+
+```json
+{
+  "Model_1": {
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john.smith@email.com",
+    "phone": "+1-555-0101",
+    "date_of_birth": "1990-01-15",
+    "street_address": "123 Main Street",
+    "name": "Vishnu",
+    "mail_id": "Vishnupriyannatarajan@gmail.com",
+    "address": "123456",
+    "city": "Hyderabad",
+    "state": "NY",
+    "zip_code": "10001",
+    "country": "United States"
+  }
+}
+```
+
+### Probability Generator Output
+
+#### Single Record Output
+```json
+{
+  "Model_1_Positive": {
+    "name": "Vishnu",
+    "mail_id": "Vishnupriyannatarajan@gmail.com",
+    "address": "123456",
+    "city": "Hyderabad"
+  }
+}
+```
+
+#### Multiple Records Output
+```json
+{
+  "Model_1_Positive": [
+    {
+      "name": "Vishnu",
+      "mail_id": "Vishnupriyannatarajan@gmail.com",
+      "address": "123456",
+      "city": "Hyderabad"
+    },
+    {
+      "name": "Priyan",
+      "mail_id": "ramdon@gamil.com",
+      "address": "12345",
+      "city": "Chennai"
+    }
+  ]
+}
+```
+
+#### All Probabilities Output
+```json
+{
+  "Model_1_Positive": {
+    "name": "Vishnu",
+    "mail_id": "Vishnupriyannatarajan@gmail.com",
+    "address": "123456",
+    "city": "Hyderabad"
+  },
+  "Model_1_Negative": {
+    "name": "",
+    "mail_id": "invalid-email",
+    "address": "",
+    "city": ""
+  },
+  "Model_1_Exclusion": {
+    "name": "Vishnu",
+    "mail_id": "Vishnupriyannatarajan@gmail.com",
+    "address": "123456",
+    "city": "Hyderabad"
+  }
+}
+```
+
+## 🔧 Usage Examples
+
+### Enhanced System
+
+#### Example 1: Generate Enhanced Output for All Models
+```bash
+python -m src.mockgen.cli --enhanced
+```
+
+#### Example 2: Generate Output for Specific Models
+```bash
+python -m src.mockgen.cli --enhanced --models Model_1 Model_1_Positive
+```
+
+#### Example 3: Generate Multiple Records for a Model
+```bash
+python -m src.mockgen.cli --model Model_1 --count 10
+```
+
+#### Example 4: Generate Split Output Files
+```bash
+python -m src.mockgen.cli --enhanced --output-format split
+```
+
+### Probability Generator
+
+#### Example 1: Generate All Probability Types
+```bash
+python generate_probability_outputs.py --all
+```
+
+#### Example 2: Generate Only Positive Probabilities
+```bash
+python generate_probability_outputs.py --positive --count 3
+```
+
+#### Example 3: Generate Negative Probabilities for Specific Model
+```bash
+python generate_probability_outputs.py --negative --model Model_1
+```
+
+#### Example 4: Generate All Probabilities for Specific Model
+```bash
+python generate_probability_outputs.py --all --model Model_2 --count 2
+```
+
+## 📂 Output Directory Structure
+
+Generated files are saved in the `mock_outputs/` directory with timestamps:
+
+```
+mock_outputs/
+├── enhanced_output_20241201_143022_123456Z.json
+├── Model_1_Positive_20241201_143022_123456Z.json
+├── Model_1_Negative_20241201_143022_123457Z.json
+├── Model_1_Exclusion_20241201_143022_123458Z.json
+├── Model_1_All_Probabilities_20241201_143022_123459Z.json
+└── ...
+```
+
+## 🎭 Demonstration
+
+Run the demonstration script to see the enhanced system in action:
+
 ```bash
 python demo_enhanced_system.py
 ```
 
-### Test Random Selection
+This will:
+1. Show how to load and merge configurations
+2. Generate outputs for different models
+3. Demonstrate various output formats
+4. Show CLI usage examples
+
+## 🔒 Safety Features
+
+- **No Codebase Changes**: All tools are completely standalone and don't modify your existing code
+- **Separate Output Directory**: All generated files go to a dedicated directory
+- **Timestamped Files**: Each output file has a unique timestamp to prevent overwrites
+- **Error Handling**: Comprehensive error handling with clear error messages
+
+## 🚨 Error Handling
+
+The system provides clear error messages for:
+- Missing or invalid input files
+- Invalid JSON format
+- Missing required fields
+- Model not found errors
+- Configuration validation errors
+
+## 🔄 Migration from Legacy Format
+
+If you have existing `Edit_X` format files, they will continue to work. The system automatically detects the format and handles it appropriately. To migrate to the new `Model_X` format:
+
+1. Convert comma-separated strings to arrays
+2. Update section names from `Edit_X` to `Model_X`
+3. Use the `--enhanced` flag for better integration with master template
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+1. **File not found**: Ensure `user_input.json` and `master.json` exist
+2. **Invalid JSON**: Check JSON syntax in input files
+3. **Missing fields**: Ensure all required fields are present
+4. **Model not found**: Check model names in user input file
+
+### Debug Mode
+
+For detailed debugging, you can modify the core functions to add more logging or run the demonstration script to see step-by-step execution.
+
+## 📝 File Naming Convention
+
+Generated files follow this naming pattern:
+- **Enhanced mode**: `enhanced_output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
+- **Model-specific**: `{model_name}_output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
+- **Probability outputs**: `{model_name}_{type}_YYYYMMDD_HHMMSS_ffffffZ.json`
+- **Standard mode**: `output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
+
+## 🔧 Advanced Usage
+
+### Custom Configuration File
 ```bash
-python test_random_selection.py
+python generate_probability_outputs.py --config my_config.json --all
 ```
 
-## File Structure
-
-```
-Mockup_up_data/
-├── user_input.json          # BRD requirements/configuration
-├── master.json              # Master template for enhanced mode
-├── README.md                # This file
-├── pyproject.toml          # Package configuration
-├── generate_mock_output.py  # Local runner (no install needed)
-├── demo_enhanced_system.py  # Enhanced mode demonstration
-├── test_random_selection.py # Random selection testing
-├── src/
-│   └── mockgen/
-│       ├── __init__.py
-│       ├── core.py          # Core library functions
-│       └── cli.py           # CLI entrypoint
-└── mock_outputs/            # Generated output files
-    └── output_*.json
-```
-
-## How It Works
-
-### Basic Mode
-1. **Load Configuration**: Reads the input JSON file and parses edit sections
-2. **Random Edit Selection**: For each output, randomly selects one available edit
-3. **Random Value Selection**: Within selected edit, randomly selects one value from each field
-4. **Output Generation**: Creates final JSON with selected values
-
-### Enhanced Mode
-1. **Load Templates**: Reads master template and BRD requirements
-2. **Merge Configuration**: Combines master template with BRD-specific values
-3. **Model Processing**: Generates output for selected models using merged configuration
-4. **Output Generation**: Creates enhanced JSON with template + BRD data
-
-## Examples
-
-### Example 1: Basic Single Output
+### Custom Output Directory
 ```bash
-python generate_mock_output.py
+python generate_probability_outputs.py --output-dir custom_outputs --positive
 ```
-Output: `mock_outputs/output_20250808_051907_760451Z.json`
 
-### Example 2: Enhanced Mode for All Models
+### Combine Multiple Options
 ```bash
-python generate_mock_output.py --enhanced
+python generate_probability_outputs.py --positive --negative --model Model_1 --count 10
 ```
-Generates output using master template + BRD requirements for all models.
 
-### Example 3: Enhanced Mode for Specific Models
-```bash
-python generate_mock_output.py --enhanced --models Model_1 Model_2 --output-format split
-```
-Generates separate files for Model_1 and Model_2 using enhanced mode.
+## 🎯 When to Use Each Tool
 
-### Example 4: Multiple Iterations
+### Use Enhanced System (`src/mockgen/cli`) when:
+- You want to integrate with master template structure
+- You need complex field mappings
+- You want to maintain consistent output structure
+- You're working with multiple models
+
+### Use Probability Generator when:
+- You need specific probability-based scenarios
+- You want quick, focused outputs
+- You're testing positive/negative/exclusion cases
+- You need standalone functionality
+
+## 🤝 Contributing
+
+The system is designed to be extensible. You can:
+- Add new field types
+- Implement custom output formats
+- Add validation rules
+- Extend the CLI with new options
+- Add new probability types
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🆘 Help and Support
+
+### Get Help for Enhanced System
 ```bash
-python generate_mock_output.py --enhanced --output-format multiple --count 5
+python -m src.mockgen.cli --help
 ```
-Generates 5 iterations of all models in one file.
+
+### Get Help for Probability Generator
+```bash
+python generate_probability_outputs.py --help
+```
+
+### List Available Models
+```bash
+python generate_probability_outputs.py --list
+```
+
+---
+
+## 🎉 Ready to Use!
+
+You now have a comprehensive system for generating mock data with:
+- **Enhanced System**: Full-featured mock generation with master template integration
+- **Probability Generator**: Specialized tool for probability-based scenarios
+- **Unified Documentation**: Single source of truth for all functionality
+- **Clean Project Structure**: No redundant files or overlapping documentation
+
+Choose the tool that best fits your needs and start generating your mock data!
