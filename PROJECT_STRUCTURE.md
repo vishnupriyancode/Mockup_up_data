@@ -2,22 +2,30 @@
 
 ## 📁 Clean Project Organization
 
-Your project has been cleaned up and organized for better maintainability.
+Your project has been cleaned up and organized for better maintainability with **enhanced features**.
 
 ### 🎯 **Core Files (Keep These)**
 ```
 Mockup_up_data/
 ├── README.md                           # 📚 Complete documentation
-├── user_input.json                     # ⚙️ User configuration
+├── user_input.json                     # ⚙️ User configuration (now includes Model_1_Exclusion)
 ├── master.json                         # 🎨 Master template
-├── demo_enhanced_system.py             # 🚀 Demo script
-├── generate_probability_outputs.py     # 🎲 Main probability generator
+├── demo_enhanced_system.py             # 🚀 Enhanced demo script
+├── generate_probability_outputs.py     # 🎲 Enhanced probability generator
 ├── .gitignore                          # 🚫 Git ignore rules
-└── src/mockgen/                        # 🔧 Core system modules
+└── src/mockgen/                        # 🔧 Enhanced core system modules
     ├── __init__.py                     # Package initialization
-    ├── core.py                         # Main functionality
-    └── cli.py                          # Command-line interface
+    ├── core.py                         # Enhanced functionality with master template integration
+    └── cli.py                          # Enhanced command-line interface
 ```
+
+### 🆕 **New Enhanced Features**
+- ✅ **Model_1_Exclusion** - Added exclusion scenarios for comprehensive testing
+- ✅ **Enhanced CLI Options** - New `--output-format` with split/multiple/single choices
+- ✅ **Master Template Integration** - Improved merging of master template with user input
+- ✅ **Split File Generation** - Generate separate files for each record
+- ✅ **Record Numbering** - Better file naming with record numbers
+- ✅ **Master Template Wrapping** - Probability outputs now wrapped in master template structure
 
 ### 🗑️ **Removed Files (No Longer Needed)**
 - ❌ `generate_probabilities.bat` - Redundant Windows wrapper
@@ -28,25 +36,40 @@ Mockup_up_data/
 - ❌ `*.pyc` - Compiled Python files
 
 ### 📂 **Output Directory**
-- `mock_outputs/` - Generated mock data files (auto-created)
+- `mock_outputs/` - Generated mock data files (auto-created with enhanced naming)
 
-## 🚀 **How to Use**
+## 🚀 **How to Use (Enhanced)**
 
-### **Main Probability Generator:**
+### **Enhanced CLI Interface:**
 ```bash
-python generate_probability_outputs.py --all
-python generate_probability_outputs.py --positive --count 5
-python generate_probability_outputs.py --negative --model Model_1
-```
-
-### **Enhanced System (CLI):**
-```bash
+# Generate enhanced output with master template integration
 python -m src.mockgen.cli --enhanced
-python -m src.mockgen.cli --model Model_1 --count 3
+
+# Generate split output files (one file per model)
+python -m src.mockgen.cli --enhanced --output-format split
+
+# Generate multiple records in separate files
+python -m src.mockgen.cli --enhanced --output-format multiple --count 5
+
+# Generate for specific models
+python -m src.mockgen.cli --enhanced --models Model_1 Model_1_Positive Model_1_Exclusion
 ```
 
-### **Demo Script:**
+### **Enhanced Probability Generator:**
 ```bash
+# Generate all probability types with split files
+python generate_probability_outputs.py --all --count 3 --split
+
+# Generate only positive probabilities for specific model
+python generate_probability_outputs.py --positive --model Model_1 --count 5
+
+# Generate exclusion scenarios
+python generate_probability_outputs.py --exclusion --model Model_1
+```
+
+### **Enhanced Demo Script:**
+```bash
+# Run enhanced demonstration
 python demo_enhanced_system.py
 ```
 
@@ -71,13 +94,18 @@ Remove-Item -Recurse -Force "mock_outputs/*"
 - ✅ `demo_enhanced_system.py`
 - ✅ `README.md` and `.gitignore`
 
-## 🎯 **Benefits of This Organization**
+## 🎯 **Benefits of Enhanced Organization**
 
 1. **Cleaner Structure** - No redundant files
 2. **Better Maintainability** - Clear separation of concerns
-3. **Faster Development** - No build artifacts cluttering the workspace
-4. **Version Control** - Proper `.gitignore` prevents committing unnecessary files
-5. **Portability** - Works consistently across different environments
+3. **Enhanced Features** - New CLI options and output formats
+4. **Master Template Integration** - Better data consistency
+5. **Exclusion Scenarios** - Comprehensive testing coverage
+6. **Split File Generation** - Flexible output options
+7. **Record Numbering** - Better file organization
+8. **Faster Development** - No build artifacts cluttering the workspace
+9. **Version Control** - Proper `.gitignore` prevents committing unnecessary files
+10. **Portability** - Works consistently across different environments
 
 ## 🔄 **Future Development**
 
@@ -86,5 +114,6 @@ When adding new features:
 - Add CLI options in `src/mockgen/cli.py`
 - Update documentation in `README.md`
 - Test with `demo_enhanced_system.py`
+- Consider adding new probability scenarios (e.g., Model_1_Edge_Case)
 
-This organization ensures your codebase remains clean and maintainable while preserving all functionality!
+This enhanced organization ensures your codebase remains clean and maintainable while providing powerful new features for comprehensive mock data generation!

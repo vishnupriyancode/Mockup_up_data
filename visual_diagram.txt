@@ -7,16 +7,17 @@
 │  │        USER INTERFACE           │      │           CORE PROCESSING ENGINE        │      │        DATA MANAGEMENT           │ │
 │  ├─────────────────────────────────┤      ├─────────────────────────────────────────┤      ├─────────────────────────────────┤ │
 │  │ • CLI Interface                 │      │  ┌─────────────────────────────────────┐ │      │ • Input Configuration          │ │
-│  │ • Demo Script                  │      │  │      Main Lambda Function            │ │      │   (user_input.json)           │ │
-│  │ • User Input Files             │      │  │     (Mock Generation Engine)         │ │      │                                 │ │
-│  │   - user_input.json            │      │  ├─────────────────────────────────────┤ │      │ • Master Template              │ │
-│  │   - master.json                │      │  │ • Configuration Parser              │ │      │   (master.json)               │ │
-│  └─────────────────────────────────┘      │  │ • Data Generator                    │ │      │                                 │ │
-│           │                               │  │ • Probability Engine                │ │      │ • Output Directory              │ │
-│           │                               │  │ • Output Formatter                  │ │      │   (mock_outputs/)              │ │
-│           │                               │  └─────────────────────────────────────┘ │      │                                 │ │
-│           │                               └─────────────────────────────────────────┘      │ • File Management                │ │
-│           │                                       │                                        │   (Timestamped Generation)      │ │
+│  │   - Enhanced Options            │      │  │      Main Lambda Function            │ │      │   (user_input.json)           │ │
+│  │   - Output Format Control       │      │  │     (Mock Generation Engine)         │ │      │                                 │ │
+│  │   - Split File Generation       │      │  ├─────────────────────────────────────┤ │      │ • Master Template              │ │
+│  │ • Demo Script                  │      │  │ • Configuration Parser              │ │      │   (master.json)               │ │
+│  │ • User Input Files             │      │  │ • Data Generator                    │ │      │                                 │ │
+│  │   - user_input.json            │      │  │ • Probability Engine                │ │      │ • Output Directory              │ │
+│  │   - master.json                │      │  │ • Output Formatter                  │ │      │   (mock_outputs/)              │ │
+│  │   - Model_1_Exclusion          │      │  │ • Master Template Integration       │ │      │                                 │ │
+│  └─────────────────────────────────┘      │  └─────────────────────────────────────┘ │      │ • File Management                │ │
+│           │                               └─────────────────────────────────────────┘ │   (Timestamped Generation)      │ │
+│           │                                       │                                        │   (Record Numbering)            │ │
 │           │                                       │                                        └─────────────────────────────────┘ │
 │           │                                       │                                                  │                              │
 │           └───────────────────────────────────────┼──────────────────────────────────────────────────┘                              │
@@ -33,7 +34,9 @@
 │                                        │ │ • Master Template│ │ • Positive Scenarios     │ │                                           │
 │                                        │ │   Integration   │ │ • Negative Scenarios     │ │                                           │
 │                                        │ │ • Multiple      │ │ • Exclusion Scenarios    │ │                                           │
-│                                        │ │   Models        │ │ • Standalone Operation   │ │                                           │
+│                                        │ │   Models        │ │ • Master Template        │ │                                           │
+│                                        │ │ • Split Files   │ │   Wrapping               │ │                                           │
+│                                        │ │ • Output Format │ │ • Record Numbering       │ │                                           │
 │                                        │ └─────────────────┘ └─────────────────────────┘ │                                           │
 │                                        │ ┌─────────────────┐ ┌─────────────────────────┐ │                                           │
 │                                        │ │     Legacy      │ │    Validation            │ │                                           │
@@ -52,14 +55,15 @@
 │  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘                    │
 │                                                                                                                                    │
 │  KEY SYSTEM FEATURES:                                                                                                               │
-│  • Master Template Integration • Multiple Model Support (Model_1, Model_1_Positive, etc.)                                          │
+│  • Master Template Integration • Multiple Model Support (Model_1, Model_1_Positive, Model_1_Negative, Model_1_Exclusion)          │
 │  • Probability-Based Scenarios (Positive/Negative/Exclusion) • Flexible Output Formats (Single/Multiple/Split)                      │
-│  • CLI Interface with Rich Options • Backward Compatibility (Edit_X format) • Automatic File Management with Timestamps            │
+│  • Enhanced CLI Interface with Rich Options • Backward Compatibility (Edit_X format) • Automatic File Management with Timestamps    │
+│  • Record Numbering System • Master Template Wrapping for Probability Outputs • Split File Generation Support                        │
 │  • Comprehensive Error Handling and Validation • Standalone Probability Generation Tool                                            │
 │                                                                                                                                    │
 │  USAGE EXAMPLES:                                                                                                                    │
-│  CLI: python -m src.mockgen.cli --enhanced --model Model_1 --count 5                                                               │
-│  Probability: python generate_probability_outputs.py --all --count 3                                                                │
+│  CLI: python -m src.mockgen.cli --enhanced --output-format split --count 5                                                        │
+│  Probability: python generate_probability_outputs.py --all --count 3 --split                                                       │
 │  Demo: python demo_enhanced_system.py                                                                                               │
 │                                                                                                                                    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘

@@ -59,6 +59,9 @@ python generate_probability_outputs.py --negative --model Model_1
 # Generate multiple records
 python generate_probability_outputs.py --all --count 5
 
+# Generate separate files for each record
+python generate_probability_outputs.py --positive --count 3 --split
+
 # List available models
 python generate_probability_outputs.py --list
 ```
@@ -156,6 +159,7 @@ The master template provides the base structure:
 - `--exclusion`: Generate only exclusion probability outputs
 - `--model`: Generate outputs for specific model only
 - `--count`: Number of records to generate per probability type
+- `--split`: Generate separate files for each record instead of combining them
 - `--list`: List available models and their probability types
 - `--config`: Path to configuration file (default: user_input.json)
 - `--output-dir`: Output directory for generated files
@@ -360,6 +364,7 @@ Generated files follow this naming pattern:
 - **Enhanced mode**: `enhanced_output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
 - **Model-specific**: `{model_name}_output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
 - **Probability outputs**: `{model_name}_{type}_YYYYMMDD_HHMMSS_ffffffZ.json`
+- **Split probability outputs**: `{model_name}_{type}_Record_XXX_YYYYMMDD_HHMMSS_ffffffZ.json`
 - **Standard mode**: `output_YYYYMMDD_HHMMSS_ffffffZ[_tag].json`
 
 ## 🔧 Advanced Usage
@@ -377,6 +382,11 @@ python generate_probability_outputs.py --output-dir custom_outputs --positive
 ### Combine Multiple Options
 ```bash
 python generate_probability_outputs.py --positive --negative --model Model_1 --count 10
+```
+
+### Generate Separate Files for Each Record
+```bash
+python generate_probability_outputs.py --positive --count 3 --split
 ```
 
 ## 🎯 When to Use Each Tool

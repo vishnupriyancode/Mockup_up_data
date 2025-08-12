@@ -96,10 +96,13 @@ class ProbabilityOutputGenerator:
             records.append(self._generate_single_record(data))
         return records
     
-    def _write_output_file(self, data: Any, filename: str) -> Path:
+    def _write_output_file(self, data: Any, filename: str, record_number: Optional[int] = None) -> Path:
         """Write output to a JSON file."""
         timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S_%fZ")
-        outfile = self.output_dir / f"{filename}_{timestamp}.json"
+        if record_number is not None:
+            outfile = self.output_dir / f"{filename}_Record_{record_number:03d}_{timestamp}.json"
+        else:
+            outfile = self.output_dir / f"{filename}_{timestamp}.json"
         
         with outfile.open("w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -107,7 +110,7 @@ class ProbabilityOutputGenerator:
         
         return outfile
     
-    def generate_positive_outputs(self, count: int = 1, model_name: Optional[str] = None) -> List[Path]:
+    def generate_positive_outputs(self, count: int = 1, model_name: Optional[str] = None, split: bool = False) -> List[Path]:
         """Generate positive probability outputs."""
         outputs = []
         models = [model_name] if model_name else self._get_model_names()
@@ -119,18 +122,31 @@ class ProbabilityOutputGenerator:
                     record = self._generate_single_record(positive_data)
                     wrapped_record = self._wrap_in_user_profile(record)
                     data = {f"{model}_Positive": wrapped_record}
+                    outfile = self._write_output_file(data, f"{model}_Positive")
+                    outputs.append(outfile)
+                    print(f"Generated Positive output: {outfile}")
                 else:
-                    records = self._generate_multiple_records(positive_data, count)
-                    wrapped_records = [self._wrap_in_user_profile(record) for record in records]
-                    data = {f"{model}_Positive": wrapped_records}
-                
-                outfile = self._write_output_file(data, f"{model}_Positive")
-                outputs.append(outfile)
-                print(f"Generated Positive output: {outfile}")
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(positive_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Positive": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Positive", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Positive output {i+1}: {outfile}")
+                    else:
+                        # Generate single file with multiple records
+                        records = self._generate_multiple_records(positive_data, count)
+                        wrapped_records = [self._wrap_in_user_profile(record) for record in records]
+                        data = {f"{model}_Positive": wrapped_records}
+                        outfile = self._write_output_file(data, f"{model}_Positive")
+                        outputs.append(outfile)
+                        print(f"Generated Positive output: {outfile}")
         
         return outputs
     
-    def generate_negative_outputs(self, count: int = 1, model_name: Optional[str] = None) -> List[Path]:
+    def generate_negative_outputs(self, count: int = 1, model_name: Optional[str] = None, split: bool = False) -> List[Path]:
         """Generate negative probability outputs."""
         outputs = []
         models = [model_name] if model_name else self._get_model_names()
@@ -142,18 +158,31 @@ class ProbabilityOutputGenerator:
                     record = self._generate_single_record(negative_data)
                     wrapped_record = self._wrap_in_user_profile(record)
                     data = {f"{model}_Negative": wrapped_record}
+                    outfile = self._write_output_file(data, f"{model}_Negative")
+                    outputs.append(outfile)
+                    print(f"Generated Negative output: {outfile}")
                 else:
-                    records = self._generate_multiple_records(negative_data, count)
-                    wrapped_records = [self._wrap_in_user_profile(record) for record in records]
-                    data = {f"{model}_Negative": wrapped_records}
-                
-                outfile = self._write_output_file(data, f"{model}_Negative")
-                outputs.append(outfile)
-                print(f"Generated Negative output: {outfile}")
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(negative_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Negative": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Negative", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Negative output {i+1}: {outfile}")
+                    else:
+                        # Generate single file with multiple records
+                        records = self._generate_multiple_records(negative_data, count)
+                        wrapped_records = [self._wrap_in_user_profile(record) for record in records]
+                        data = {f"{model}_Negative": wrapped_records}
+                        outfile = self._write_output_file(data, f"{model}_Negative")
+                        outputs.append(outfile)
+                        print(f"Generated Negative output: {outfile}")
         
         return outputs
     
-    def generate_exclusion_outputs(self, count: int = 1, model_name: Optional[str] = None) -> List[Path]:
+    def generate_exclusion_outputs(self, count: int = 1, model_name: Optional[str] = None, split: bool = False) -> List[Path]:
         """Generate exclusion probability outputs."""
         outputs = []
         models = [model_name] if model_name else self._get_model_names()
@@ -165,18 +194,31 @@ class ProbabilityOutputGenerator:
                     record = self._generate_single_record(exclusion_data)
                     wrapped_record = self._wrap_in_user_profile(record)
                     data = {f"{model}_Exclusion": wrapped_record}
+                    outfile = self._write_output_file(data, f"{model}_Exclusion")
+                    outputs.append(outfile)
+                    print(f"Generated Exclusion output: {outfile}")
                 else:
-                    records = self._generate_multiple_records(exclusion_data, count)
-                    wrapped_records = [self._wrap_in_user_profile(record) for record in records]
-                    data = {f"{model}_Exclusion": wrapped_records}
-                
-                outfile = self._write_output_file(data, f"{model}_Exclusion")
-                outputs.append(outfile)
-                print(f"Generated Exclusion output: {outfile}")
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(exclusion_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Exclusion": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Exclusion", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Exclusion output {i+1}: {outfile}")
+                    else:
+                        # Generate single file with multiple records
+                        records = self._generate_multiple_records(exclusion_data, count)
+                        wrapped_records = [self._wrap_in_user_profile(record) for record in records]
+                        data = {f"{model}_Exclusion": wrapped_records}
+                        outfile = self._write_output_file(data, f"{model}_Exclusion")
+                        outputs.append(outfile)
+                        print(f"Generated Exclusion output: {outfile}")
         
         return outputs
     
-    def generate_all_probabilities(self, count: int = 1, model_name: Optional[str] = None) -> List[Path]:
+    def generate_all_probabilities(self, count: int = 1, model_name: Optional[str] = None, split: bool = False) -> List[Path]:
         """Generate all probability types for specified models."""
         outputs = []
         models = [model_name] if model_name else self._get_model_names()
@@ -190,7 +232,17 @@ class ProbabilityOutputGenerator:
                 if count == 1:
                     model_outputs[f"{model}_Positive"] = self._wrap_in_user_profile(self._generate_single_record(positive_data))
                 else:
-                    model_outputs[f"{model}_Positive"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(positive_data, count)]
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(positive_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Positive": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Positive", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Positive output {i+1}: {outfile}")
+                    else:
+                        model_outputs[f"{model}_Positive"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(positive_data, count)]
             
             # Generate negative
             negative_data = self._get_probability_data(model, "Negative")
@@ -198,7 +250,17 @@ class ProbabilityOutputGenerator:
                 if count == 1:
                     model_outputs[f"{model}_Negative"] = self._wrap_in_user_profile(self._generate_single_record(negative_data))
                 else:
-                    model_outputs[f"{model}_Negative"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(negative_data, count)]
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(negative_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Negative": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Negative", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Negative output {i+1}: {outfile}")
+                    else:
+                        model_outputs[f"{model}_Negative"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(negative_data, count)]
             
             # Generate exclusion
             exclusion_data = self._get_probability_data(model, "Exclusion")
@@ -206,9 +268,19 @@ class ProbabilityOutputGenerator:
                 if count == 1:
                     model_outputs[f"{model}_Exclusion"] = self._wrap_in_user_profile(self._generate_single_record(exclusion_data))
                 else:
-                    model_outputs[f"{model}_Exclusion"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(exclusion_data, count)]
+                    if split:
+                        # Generate separate files for each record
+                        for i in range(count):
+                            record = self._generate_single_record(exclusion_data)
+                            wrapped_record = self._wrap_in_user_profile(record)
+                            data = {f"{model}_Exclusion": wrapped_record}
+                            outfile = self._write_output_file(data, f"{model}_Exclusion", i + 1)
+                            outputs.append(outfile)
+                            print(f"Generated Exclusion output {i+1}: {outfile}")
+                    else:
+                        model_outputs[f"{model}_Exclusion"] = [self._wrap_in_user_profile(record) for record in self._generate_multiple_records(exclusion_data, count)]
             
-            if model_outputs:
+            if model_outputs and not split:
                 outfile = self._write_output_file(model_outputs, f"{model}_All_Probabilities")
                 outputs.append(outfile)
                 print(f"Generated All Probabilities output: {outfile}")
@@ -248,6 +320,9 @@ Examples:
   
   # Generate multiple records
   python generate_probability_outputs.py --all --count 5
+  
+  # Generate separate files for each record
+  python generate_probability_outputs.py --positive --count 3 --split
   
   # List available models
   python generate_probability_outputs.py --list
@@ -308,6 +383,12 @@ Examples:
         help="List available models and their probability types"
     )
     
+    parser.add_argument(
+        "--split", "-s",
+        action="store_true",
+        help="Generate separate files for each record instead of combining them"
+    )
+    
     args = parser.parse_args()
     
     try:
@@ -324,14 +405,14 @@ Examples:
         outputs = []
         
         if args.all:
-            outputs.extend(generator.generate_all_probabilities(args.count, args.model))
+            outputs.extend(generator.generate_all_probabilities(args.count, args.model, args.split))
         else:
             if args.positive:
-                outputs.extend(generator.generate_positive_outputs(args.count, args.model))
+                outputs.extend(generator.generate_positive_outputs(args.count, args.model, args.split))
             if args.negative:
-                outputs.extend(generator.generate_negative_outputs(args.count, args.model))
+                outputs.extend(generator.generate_negative_outputs(args.count, args.model, args.split))
             if args.exclusion:
-                outputs.extend(generator.generate_exclusion_outputs(args.count, args.model))
+                outputs.extend(generator.generate_exclusion_outputs(args.count, args.model, args.split))
         
         if outputs:
             print(f"\nGenerated {len(outputs)} output file(s) in '{args.output_dir}' directory")
