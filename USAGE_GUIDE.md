@@ -1,5 +1,32 @@
 # Mock Generation System - Usage Guide
 
+## 📦 Package Requirements
+
+### Python Version
+- **Python 3.7 or higher** is required
+- The project uses modern Python features including type hints, pathlib, and f-strings
+
+### Dependencies
+This project uses **only Python standard library modules** - no external packages need to be installed:
+
+- **json**: JSON file handling and parsing
+- **random**: Random data generation for mock values
+- **datetime**: Timestamp generation for output files
+- **pathlib**: Modern file path handling
+- **typing**: Type hints for better code quality
+- **argparse**: Command line interface parsing
+- **os**: Operating system interface operations
+
+### Installation
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd Mockup_up_data
+
+# No pip install needed - just ensure Python 3.7+ is available
+python --version  # Should show Python 3.7 or higher
+```
+
 ## 🚀 Getting Started
 
 The Mock Generation System is now working correctly! Here's how to use it:
