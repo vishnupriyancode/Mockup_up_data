@@ -1,0 +1,65 @@
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    MOCK GENERATION SYSTEM ARCHITECTURE                                      │
+│                                                                                                             │
+│  [USER INTERFACE LAYER]                    [CORE PROCESSING ENGINE]                    [DATA MANAGEMENT LAYER] │
+│                                                                                                             │
+│  ┌─────────────────────────────────┐      ┌─────────────────────────────────────────┐      ┌─────────────────────────────────┐ │
+│  │        USER INTERFACE           │      │           CORE PROCESSING ENGINE        │      │        DATA MANAGEMENT           │ │
+│  ├─────────────────────────────────┤      ├─────────────────────────────────────────┤      ├─────────────────────────────────┤ │
+│  │ • CLI Interface                 │      │  ┌─────────────────────────────────────┐ │      │ • Input Configuration          │ │
+│  │ • Demo Script                  │      │  │      Main Lambda Function            │ │      │   (user_input.json)           │ │
+│  │ • User Input Files             │      │  │     (Mock Generation Engine)         │ │      │                                 │ │
+│  │   - user_input.json            │      │  ├─────────────────────────────────────┤ │      │ • Master Template              │ │
+│  │   - master.json                │      │  │ • Configuration Parser              │ │      │   (master.json)               │ │
+│  └─────────────────────────────────┘      │  │ • Data Generator                    │ │      │                                 │ │
+│           │                               │  │ • Probability Engine                │ │      │ • Output Directory              │ │
+│           │                               │  │ • Output Formatter                  │ │      │   (mock_outputs/)              │ │
+│           │                               │  └─────────────────────────────────────┘ │      │                                 │ │
+│           │                               └─────────────────────────────────────────┘      │ • File Management                │ │
+│           │                                       │                                        │   (Timestamped Generation)      │ │
+│           │                                       │                                        └─────────────────────────────────┘ │
+│           │                                       │                                                  │                              │
+│           └───────────────────────────────────────┼──────────────────────────────────────────────────┘                              │
+│                                                   │                                                                                  │
+│                                        [PROCESSING SERVICES LAYER]                                                                     │
+│                                                   │                                                                                  │
+│                                        ┌─────────────────────────────────────────────────┐                                           │
+│                                        │              PROCESSING SERVICES                │                                           │
+│                                        ├─────────────────────────────────────────────────┤                                           │
+│                                        │ ┌─────────────────┐ ┌─────────────────────────┐ │                                           │
+│                                        │ │   Enhanced      │ │    Probability           │ │                                           │
+│                                        │ │     System      │ │    Generator              │ │                                           │
+│                                        │ │                 │ │                          │ │                                           │
+│                                        │ │ • Master Template│ │ • Positive Scenarios     │ │                                           │
+│                                        │ │   Integration   │ │ • Negative Scenarios     │ │                                           │
+│                                        │ │ • Multiple      │ │ • Exclusion Scenarios    │ │                                           │
+│                                        │ │   Models        │ │ • Standalone Operation   │ │                                           │
+│                                        │ └─────────────────┘ └─────────────────────────┘ │                                           │
+│                                        │ ┌─────────────────┐ ┌─────────────────────────┐ │                                           │
+│                                        │ │     Legacy      │ │    Validation            │ │                                           │
+│                                        │ │     Support     │ │     Engine               │ │                                           │
+│                                        │ │                 │ │                          │ │                                           │
+│                                        │ │ • Edit_X Format │ │ • Data Validation        │ │                                           │
+│                                        │ │ • Backward      │ │ • Error Handling         │ │                                           │
+│                                        │ │   Compatibility │ │ • Configuration Checks   │ │                                           │
+│                                        │ └─────────────────┘ └─────────────────────────┘ │                                           │
+│                                        └─────────────────────────────────────────────────┘                                           │
+│                                                                                                                                    │
+│  DATA FLOW ARCHITECTURE:                                                                                                            │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                    │
+│  │   User      │───▶│   Config    │───▶│    Data     │───▶│Probability  │───▶│   Output    │───▶│    File     │                    │
+│  │   Input     │    │   Parser    │    │  Generator  │    │  Engine     │    │ Formatter   │    │   System    │                    │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘                    │
+│                                                                                                                                    │
+│  KEY SYSTEM FEATURES:                                                                                                               │
+│  • Master Template Integration • Multiple Model Support (Model_1, Model_1_Positive, etc.)                                          │
+│  • Probability-Based Scenarios (Positive/Negative/Exclusion) • Flexible Output Formats (Single/Multiple/Split)                      │
+│  • CLI Interface with Rich Options • Backward Compatibility (Edit_X format) • Automatic File Management with Timestamps            │
+│  • Comprehensive Error Handling and Validation • Standalone Probability Generation Tool                                            │
+│                                                                                                                                    │
+│  USAGE EXAMPLES:                                                                                                                    │
+│  CLI: python -m src.mockgen.cli --enhanced --model Model_1 --count 5                                                               │
+│  Probability: python generate_probability_outputs.py --all --count 3                                                                │
+│  Demo: python demo_enhanced_system.py                                                                                               │
+│                                                                                                                                    │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
