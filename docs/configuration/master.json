@@ -1,0 +1,16 @@
+{
+  "user_profile": {
+    "first_name": ["John"],
+    "last_name": ["Smith"],
+    "email": ["john.smith@email.com"],
+    "phone": ["+1-555-0101"],
+    "date_of_birth": ["1990-01-15"],
+    "street_address": ["123 Main Street"],
+    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "mail_id": ["Vishnupriyannatarajan@gmail.com"],
+    "address": ["123456", "12345", "654321", "123"],
+    "city": ["Hyderabad"],
+    "state": ["NY"],
+    "zip_code": ["10001"],
+    "country": ["United States"]
+  }}

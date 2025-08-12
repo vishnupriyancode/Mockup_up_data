@@ -10,7 +10,6 @@ Mockup_up_data/
 ├── README.md                           # 📚 Complete documentation
 ├── user_input.json                     # ⚙️ User configuration (now includes Model_1_Exclusion)
 ├── master.json                         # 🎨 Master template
-├── demo_enhanced_system.py             # 🚀 Enhanced demo script
 ├── generate_probability_outputs.py     # 🎲 Enhanced probability generator
 ├── .gitignore                          # 🚫 Git ignore rules
 └── src/mockgen/                        # 🔧 Enhanced core system modules
@@ -28,6 +27,7 @@ Mockup_up_data/
 - ✅ **Master Template Wrapping** - Probability outputs now wrapped in master template structure
 
 ### 🗑️ **Removed Files (No Longer Needed)**
+- ❌ `demo_enhanced_system.py` - Demo script (not implemented in current version)
 - ❌ `generate_probabilities.bat` - Redundant Windows wrapper
 - ❌ `generate_probabilities.ps1` - Redundant PowerShell wrapper  
 - ❌ `pyproject.toml` - Package configuration (not needed)
@@ -53,6 +53,9 @@ python -m src.mockgen.cli --enhanced --output-format multiple --count 5
 
 # Generate for specific models
 python -m src.mockgen.cli --enhanced --models Model_1 Model_1_Positive Model_1_Exclusion
+
+# Initialize template configuration
+python -m src.mockgen.cli --init
 ```
 
 ### **Enhanced Probability Generator:**
@@ -65,12 +68,21 @@ python generate_probability_outputs.py --positive --model Model_1 --count 5
 
 # Generate exclusion scenarios
 python generate_probability_outputs.py --exclusion --model Model_1
+
+# List available models
+python generate_probability_outputs.py --list
+
+# Custom configuration and output directory
+python generate_probability_outputs.py --config my_config.json --output-dir custom_outputs --all
 ```
 
-### **Enhanced Demo Script:**
+### **CLI Help and Documentation:**
 ```bash
-# Run enhanced demonstration
-python demo_enhanced_system.py
+# Enhanced CLI help
+python -m src.mockgen.cli --help
+
+# Probability generator help
+python generate_probability_outputs.py --help
 ```
 
 ## 🧹 **Maintenance**
@@ -91,7 +103,6 @@ Remove-Item -Recurse -Force "mock_outputs/*"
 - ✅ `src/mockgen/` directory and its contents
 - ✅ `user_input.json` and `master.json`
 - ✅ `generate_probability_outputs.py`
-- ✅ `demo_enhanced_system.py`
 - ✅ `README.md` and `.gitignore`
 
 ## 🎯 **Benefits of Enhanced Organization**
@@ -113,7 +124,7 @@ When adding new features:
 - Put core logic in `src/mockgen/core.py`
 - Add CLI options in `src/mockgen/cli.py`
 - Update documentation in `README.md`
-- Test with `demo_enhanced_system.py`
+- Test with CLI commands and probability generator
 - Consider adding new probability scenarios (e.g., Model_1_Edge_Case)
 
 This enhanced organization ensures your codebase remains clean and maintainable while providing powerful new features for comprehensive mock data generation!

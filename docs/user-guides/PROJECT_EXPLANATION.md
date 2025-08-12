@@ -13,11 +13,11 @@ The system follows a **modular, layered architecture** that separates concerns a
 
 #### **1. User Interface Layer**
 - **Enhanced CLI Interface**: Advanced command-line tool with output format control and split file generation
-- **Demo Script**: Interactive demonstration and testing interface with enhanced features
+- **Probability Generator**: Standalone tool for generating probability-based scenarios
 - **Configuration Files**: JSON-based input system for easy customization including exclusion scenarios
 
 #### **2. Core Processing Engine**
-- **Main Lambda Function**: Central orchestration and processing unit
+- **Main Processing Engine**: Central orchestration and processing unit
 - **Configuration Parser**: Input validation and processing with enhanced model support
 - **Data Generator**: Core mock data generation algorithms with master template integration
 - **Probability Engine**: Scenario-based data generation including exclusion scenarios
@@ -83,7 +83,6 @@ Mockup_up_data/
 │   └── cli.py                      # Enhanced command-line interface with output format control
 ├── user_input.json                 # Enhanced user configuration with exclusion scenarios
 ├── master.json                     # Master template structure
-├── demo_enhanced_system.py         # Enhanced interactive demonstration script
 ├── generate_probability_outputs.py # Enhanced probability generation tool with split support
 ├── visual_diagram.txt              # Updated system architecture diagram
 └── mock_outputs/                   # Generated output files with enhanced naming (auto-created)
@@ -177,6 +176,9 @@ python -m src.mockgen.cli --legacy --model Edit_1
 
 # Split generation with specific count
 python -m src.mockgen.cli --enhanced --output-format split --count 5
+
+# Initialize template configuration
+python -m src.mockgen.cli --init
 ```
 
 ### **2. Enhanced Probability Generator**
@@ -200,24 +202,48 @@ python generate_probability_outputs.py --all --count 5 --split
 
 # List available models
 python generate_probability_outputs.py --list
-```
 
-#### **Custom Configuration with Enhanced Features**
-```bash
 # Custom configuration file
 python generate_probability_outputs.py --config my_config.json --all
 
 # Custom output directory
 python generate_probability_outputs.py --output-dir custom_outputs --positive
-
-# Combine multiple options with split generation
-python generate_probability_outputs.py --positive --negative --model Model_1 --count 10 --split
 ```
 
-### **3. Enhanced Demo Script**
+#### **Available CLI Options for Probability Generator**
 ```bash
-# Run interactive demonstration with enhanced features
-python demo_enhanced_system.py
+# Help and options
+python generate_probability_outputs.py --help
+
+# Available options:
+# --all: Generate all probability types (positive, negative, exclusion)
+# --positive: Generate only positive scenarios
+# --negative: Generate only negative scenarios  
+# --exclusion: Generate only exclusion scenarios
+# --model MODEL: Specify model to generate for
+# --count COUNT: Number of records to generate
+# --split: Generate separate files for each record
+# --config FILE: Custom configuration file path
+# --output-dir DIR: Custom output directory
+# --list: List available models
+```
+
+### **3. CLI Help and Documentation**
+```bash
+# Enhanced CLI help
+python -m src.mockgen.cli --help
+
+# Available CLI options:
+# --config: Path to input JSON file
+# --master: Path to master template file
+# --init: Create/overwrite template input JSON
+# --count: Number of random outputs
+# --split: Write each output to separate file
+# --model: Generate output for specific model
+# --enhanced: Use enhanced mode with master template
+# --models: Specific models to generate for
+# --output-format: single/multiple/split
+# --legacy: Force legacy mode for Edit_X format
 ```
 
 ## 📊 **Enhanced Output Examples**
@@ -493,7 +519,7 @@ python generate_probability_outputs.py --list
 ### **Quick Start Guide**
 1. **Clone/Download**: Get the project files
 2. **Install Dependencies**: Ensure Python 3.6+ is available
-3. **Run Enhanced Demo**: Execute `python demo_enhanced_system.py`
+3. **Run Enhanced System**: Execute `python -m src.mockgen.cli --enhanced`
 4. **Generate Enhanced Data**: Use enhanced CLI tools to generate mock data
 5. **Customize**: Modify configuration files for your needs
 6. **Explore New Features**: Try split file generation and exclusion scenarios
