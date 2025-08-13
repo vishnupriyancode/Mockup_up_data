@@ -1,0 +1,23 @@
+-> all scenarios in single file
+-> for selected models
+-> for positive scenarios of model_1 
+
+
+If user mention positive or negative or exclusion for each model
+, user is expecting scenarios wise jsons
+
+-> for positive scenarios of model_1
+-> for Negative scenarios of model_1
+-> for exclusion scenarios of model_1
+
+it is applicable for all models
+
+verify all commands mentioned in read.md are working fine to generate json and locate in mock_output folder for user
+
+-> Enhanced System (Recommended) commands
+-> Probability Generator commands
+-> Probability Generator Options commands
+-> Enhanced System Options commands
+
+
+ 
