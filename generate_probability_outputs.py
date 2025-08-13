@@ -44,8 +44,10 @@ class ProbabilityOutputGenerator:
         """Get base model names (without _Positive, _Negative, _Exclusion suffixes)."""
         base_models = set()
         for key in self.config.keys():
-            if "_Positive" in key or "_Negative" in key or "_Exclusion" in key:
-                base_name = key.replace("_Positive", "").replace("_Negative", "").replace("_Exclusion", "")
+            if ("_Positive" in key or "_positive" in key or 
+                "_Negative" in key or "_negative" in key or 
+                "_Exclusion" in key or "_exclusion" in key):
+                base_name = key.replace("_Positive", "").replace("_positive", "").replace("_Negative", "").replace("_negative", "").replace("_Exclusion", "").replace("_exclusion", "")
                 base_models.add(base_name)
             else:
                 base_models.add(key)
@@ -53,15 +55,44 @@ class ProbabilityOutputGenerator:
     
     def _get_probability_data(self, model_name: str, probability_type: str) -> Optional[Dict[str, List[str]]]:
         """Get data for a specific model and probability type."""
-        key = f"{model_name}_{probability_type}"
-        return self.config.get(key)
+        # Handle both uppercase and lowercase probability type suffixes
+        key_upper = f"{model_name}_{probability_type}"
+        key_lower = f"{model_name}_{probability_type.lower()}"
+        
+        # Try uppercase first, then lowercase
+        if key_upper in self.config:
+            return self.config.get(key_upper)
+        elif key_lower in self.config:
+            return self.config.get(key_lower)
+        else:
+            return None
     
     def _generate_single_record(self, data: Dict[str, List[str]]) -> Dict[str, str]:
         """Generate a single record from probability data."""
         record = {}
         for field, values in data.items():
             if isinstance(values, list) and values:
-                record[field] = random.choice(values)
+                # Handle nested structures (like ClaimDetails)
+                if field == "ClaimDetails" and values and isinstance(values[0], dict):
+                    # Process nested ClaimDetails structure
+                    processed_claim_details = []
+                    for claim_detail in values:
+                        processed_claim = {}
+                        for nested_field, nested_values in claim_detail.items():
+                            if isinstance(nested_values, list) and nested_values:
+                                # Randomly select from available values
+                                processed_claim[nested_field] = random.choice(nested_values)
+                            elif isinstance(nested_values, str):
+                                # Single value, use as is
+                                processed_claim[nested_field] = nested_values
+                            else:
+                                # Fallback to empty string if no valid values
+                                processed_claim[nested_field] = ""
+                        processed_claim_details.append(processed_claim)
+                    record[field] = processed_claim_details
+                else:
+                    # Randomly select from available values for flat fields
+                    record[field] = random.choice(values)
             else:
                 record[field] = ""
         return record
@@ -78,10 +109,15 @@ class ProbabilityOutputGenerator:
             for field, value in record.items():
                 if field in output.get("user_profile", {}):
                     output["user_profile"][field] = value
+                else:
+                    # Add fields that are not in master template (like ClaimDetails)
+                    if "user_profile" not in output:
+                        output["user_profile"] = {}
+                    output["user_profile"][field] = value
             
-            # Convert array values to single values
+            # Convert array values to single values for non-array fields
             for field, value in output["user_profile"].items():
-                if isinstance(value, list) and len(value) == 1:
+                if isinstance(value, list) and len(value) == 1 and field != "ClaimDetails":
                     output["user_profile"][field] = value[0]
             
             return output
@@ -294,9 +330,9 @@ class ProbabilityOutputGenerator:
         
         for model in self._get_model_names():
             print(f"\n{model}:")
-            positive = "✓" if f"{model}_Positive" in self.config else "✗"
-            negative = "✓" if f"{model}_Negative" in self.config else "✗"
-            exclusion = "✓" if f"{model}_Exclusion" in self.config else "✗"
+            positive = "✓" if (f"{model}_Positive" in self.config or f"{model}_positive" in self.config) else "✗"
+            negative = "✓" if (f"{model}_Negative" in self.config or f"{model}_negative" in self.config) else "✗"
+            exclusion = "✓" if (f"{model}_Exclusion" in self.config or f"{model}_exclusion" in self.config) else "✗"
             
             print(f"  Positive: {positive}")
             print(f"  Negative: {negative}")

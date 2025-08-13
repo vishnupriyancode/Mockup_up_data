@@ -12,5 +12,20 @@
     "city": ["Hyderabad"],
     "state": ["NY"],
     "zip_code": ["10001"],
-    "country": ["United States"]
+    "country": ["United States"],
+    "PRICNG_ZIP_STATE":["TN","KL","AP","KT"],
+    "CLM_TYPE":["P","C","D"],
+    "SRVC_FROM_DT":["04/20/2025"],
+    "HCID":["ABCDEFGHI","ABCDEFGHI","ABCDE5555","555DEFGHI"],
+    "PAT_BRTH_DT":["01/01/1990","01/02/1990","01/03/1990","01/04/1990"],
+    "PAT_FRST_NME":["Mohan","Raj","Rajesh","Rajeshwari"],
+    "PAT_LAST_NME":["Kumar","AJ","VP","D"],
+    "ClaimDetails":
+    [
+      {
+      "SRVC_FROM_DT":["12/12/2024"],
+      "proc_cd": ["12345","67890","12394","30009"],
+      "BILL_TYPE":["P"]
+      }
+    ]
   }}

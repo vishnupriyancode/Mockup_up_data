@@ -1,38 +1,184 @@
-
 {
   "Model_1": {
-    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-    "mail_id": [
-      "Vishnupriyannatarajan@gmail.com",
-      "ramdon@gamil.com",
-      "ram@gamil.com"
+    "PRICNG_ZIP_STATE": [
+      "TN",
+      "KL",
+      "AP",
+      "KT"
     ],
-    "address": ["123456", "12345", "654321", "123"],
-    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
-  },
-  "Model_1_Positive": {
-    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-    "mail_id": [
-      "Vishnupriyannatarajan@gmail.com",
-      "ramdon@gamil.com",
-      "ram@gamil.com"
+    "CLM_TYPE": [
+      "P",
+      "C",
+      "D"
     ],
-    "address": ["123456", "12345", "654321", "123"],
-    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
-  },
-  "Model_1_Negative": {
-    "proc_cd": ["", "123", "@@@"],
-    "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
-    "address": ["", "!@#", "????"],
-    "city": ["", "Atlantis", "12345"]
-  },
-  "Model_1_Exclusion": {
-    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-    "mail_id": [
-      "Vishnupriyannatarajan@gmail.com",
-      "ramdon@gamil.com",
-      "ram@gamil.com"
+    "SRVC_FROM_DT": [
+      "04/20/2025"
     ],
-    "address": ["123456", "12345", "654321", "123"],
-    "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
-  }}
+    "HCID": [
+      "ABCDEFGHI",
+      "ABCDEFGHI",
+      "ABCDE5555",
+      "555DEFGHI"
+    ],
+    "PAT_BRTH_DT": [
+      "01/01/1990",
+      "01/02/1990",
+      "01/03/1990",
+      "01/04/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Mohan",
+      "Raj",
+      "Rajesh",
+      "Rajeshwari"
+    ],
+    "PAT_LAST_NME": [
+      "Kumar",
+      "AJ",
+      "VP",
+      "D"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": [
+          "12/12/2024"
+        ],
+        "proc_cd": [
+          "12345",
+          "67890",
+          "12394",
+          "30009"
+        ],
+        "BILL_TYPE": [
+          "P"
+        ]
+      }
+    ]
+  },
+  "Model_1_positive": {
+    "PRICNG_ZIP_STATE": [
+      "TN",
+      "KL"
+    ],
+    "CLM_TYPE": [
+      "P"
+    ],
+    "SRVC_FROM_DT": [
+      "04/20/2025"
+    ],
+    "HCID": [
+      "ABCDEFGHI",
+      "ABCDEFGHI"
+    ],
+    "PAT_BRTH_DT": [
+      "01/01/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Mohan",
+      "Raj"
+    ],
+    "PAT_LAST_NME": [
+      "Kumar",
+      "AJ"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": [
+          "12/12/2024"
+        ],
+        "proc_cd": [
+          "12345",
+          "67890",
+          "12394",
+          "30009"
+        ],
+        "BILL_TYPE": [
+          "P"
+        ]
+      }
+    ]
+  },
+  "Model_1_negative": {
+    "PRICNG_ZIP_STATE": [
+      "AP",
+      "KT"
+    ],
+    "CLM_TYPE": [
+      "C",
+      "D"
+    ],
+    "SRVC_FROM_DT": [
+      "04/20/2025"
+    ],
+    "HCID": [
+      "ABCDE5555",
+      "555DEFGHI"
+    ],
+    "PAT_BRTH_DT": [
+      "01/03/1990",
+      "01/04/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Rajesh",
+      "Rajeshwari"
+    ],
+    "PAT_LAST_NME": [
+      "VP",
+      "D"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": [
+          "12/12/2024"
+        ],
+        "proc_cd": [
+          "12345",
+          "67890",
+          "12394",
+          "30009"
+        ],
+        "BILL_TYPE": [
+          "P"
+        ]
+      }
+    ]
+  },
+  "Model_1_exclusion": {
+    "PRICNG_ZIP_STATE": [
+      "KT"
+    ],
+    "CLM_TYPE": [
+      "P",
+      "D"
+    ],
+    "SRVC_FROM_DT": [
+      "04/20/2025"
+    ],
+    "HCID": [
+      "555DEFGHI"
+    ],
+    "PAT_BRTH_DT": [
+      "01/04/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Rajeshwari"
+    ],
+    "PAT_LAST_NME": [
+      "AJ"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": [
+          "12/12/2024"
+        ],
+        "proc_cd": [
+          "12345",
+          "30009"
+        ],
+        "BILL_TYPE": [
+          "P"
+        ]
+      }
+    ]
+  }
+}

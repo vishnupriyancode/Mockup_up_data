@@ -198,11 +198,21 @@ def main() -> None:
     if args.count > 1 and args.split:
         for i in range(1, args.count + 1):
             # Simple random selection per output file
-            payload = build_output_payload(user_data, count=1)
+            if args.models:
+                # Use only specified models
+                selected_data = {k: v for k, v in user_data.items() if k in args.models}
+                payload = build_output_payload(selected_data, count=1)
+            else:
+                payload = build_output_payload(user_data, count=1)
             outfile = write_output_file(payload, file_tag=f"_{i}")
             print(f"Generated: {outfile}")
     else:
-        payload = build_output_payload(user_data, count=args.count)
+        if args.models:
+            # Use only specified models
+            selected_data = {k: v for k, v in user_data.items() if k in args.models}
+            payload = build_output_payload(selected_data, count=args.count)
+        else:
+            payload = build_output_payload(user_data, count=args.count)
         outfile = write_output_file(payload)
         print(f"Generated: {outfile}")
 

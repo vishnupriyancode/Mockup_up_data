@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Tuple
 CONFIG_FILE = Path("user_input.json")
 MASTER_TEMPLATE_FILE = Path("master.json")
 OUTPUT_DIR = Path("mock_outputs")
-REQUIRED_FIELDS: List[str] = ["proc_cd", "mail_id", "address", "city"]
+REQUIRED_FIELDS: List[str] = ["PRICNG_ZIP_STATE", "CLM_TYPE", "SRVC_FROM_DT", "HCID", "PAT_BRTH_DT", "PAT_FRST_NME", "PAT_LAST_NME", "ClaimDetails"]
 
 
 def ensure_config_file(path: Path, overwrite: bool = False) -> None:
@@ -18,28 +18,68 @@ def ensure_config_file(path: Path, overwrite: bool = False) -> None:
         return
     template = {
         "Model_1": {
-            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
-            "address": ["123456", "12345", "654321", "123"],
-            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+            "PRICNG_ZIP_STATE": ["TN", "KL", "AP", "KT"],
+            "CLM_TYPE": ["P", "C", "D"],
+            "SRVC_FROM_DT": ["04/20/2025"],
+            "HCID": ["ABCDEFGHI", "ABCDEFGHI", "ABCDE5555", "555DEFGHI"],
+            "PAT_BRTH_DT": ["01/01/1990", "01/02/1990", "01/03/1990", "01/04/1990"],
+            "PAT_FRST_NME": ["Mohan", "Raj", "Rajesh", "Rajeshwari"],
+            "PAT_LAST_NME": ["Kumar", "AJ", "VP", "D"],
+            "ClaimDetails": [
+                {
+                    "SRVC_FROM_DT": ["12/12/2024"],
+                    "proc_cd": ["12345", "67890", "12394", "30009"],
+                    "BILL_TYPE": ["P"]
+                }
+            ]
         },
-        "Model_1_Positive": {
-            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
-            "address": ["123456", "12345", "654321", "123"],
-            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+        "Model_1_positive": {
+            "PRICNG_ZIP_STATE": ["TN", "KL"],
+            "CLM_TYPE": ["P"],
+            "SRVC_FROM_DT": ["04/20/2025"],
+            "HCID": ["ABCDEFGHI", "ABCDEFGHI"],
+            "PAT_BRTH_DT": ["01/01/1990"],
+            "PAT_FRST_NME": ["Mohan", "Raj"],
+            "PAT_LAST_NME": ["Kumar", "AJ"],
+            "ClaimDetails": [
+                {
+                    "SRVC_FROM_DT": ["12/12/2024"],
+                    "proc_cd": ["12345", "67890", "12394", "30009"],
+                    "BILL_TYPE": ["P"]
+                }
+            ]
         },
-        "Model_1_Negative": {
-            "proc_cd": ["", "123", "@@@"],
-            "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
-            "address": ["", "!@#", "????"],
-            "city": ["", "Atlantis", "12345"]
+        "Model_1_negative": {
+            "PRICNG_ZIP_STATE": ["AP", "KT"],
+            "CLM_TYPE": ["C", "D"],
+            "SRVC_FROM_DT": ["04/20/2025"],
+            "HCID": ["ABCDE5555", "555DEFGHI"],
+            "PAT_BRTH_DT": ["01/03/1990", "01/04/1990"],
+            "PAT_FRST_NME": ["Rajesh", "Rajeshwari"],
+            "PAT_LAST_NME": ["VP", "D"],
+            "ClaimDetails": [
+                {
+                    "SRVC_FROM_DT": ["12/12/2024"],
+                    "proc_cd": ["12345", "67890", "12394", "30009"],
+                    "BILL_TYPE": ["P"]
+                }
+            ]
         },
-        "Model_1_Exclusion": {
-            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
-            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
-            "address": ["123456", "12345", "654321", "123"],
-            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
+        "Model_1_exclusion": {
+            "PRICNG_ZIP_STATE": ["KT"],
+            "CLM_TYPE": ["P", "D"],
+            "SRVC_FROM_DT": ["04/20/2025"],
+            "HCID": ["555DEFGHI"],
+            "PAT_BRTH_DT": ["01/04/1990"],
+            "PAT_FRST_NME": ["Rajeshwari"],
+            "PAT_LAST_NME": ["AJ"],
+            "ClaimDetails": [
+                {
+                    "SRVC_FROM_DT": ["12/12/2024"],
+                    "proc_cd": ["12345", "30009"],
+                    "BILL_TYPE": ["P"]
+                }
+            ]
         }
     }
     with path.open("w", encoding="utf-8") as f:
@@ -200,8 +240,27 @@ def generate_model_outputs(merged_config: Dict[str, Any], selected_models: List[
         # Generate records for each field
         for field, values in model_data.items():
             if isinstance(values, list) and values:
-                # Randomly select from available values
-                model_output[field] = random.choice(values)
+                # Handle nested structures (like ClaimDetails)
+                if field == "ClaimDetails" and values and isinstance(values[0], dict):
+                    # Process nested ClaimDetails structure
+                    processed_claim_details = []
+                    for claim_detail in values:
+                        processed_claim = {}
+                        for nested_field, nested_values in claim_detail.items():
+                            if isinstance(nested_values, list) and nested_values:
+                                # Randomly select from available values
+                                processed_claim[nested_field] = random.choice(nested_values)
+                            elif isinstance(nested_values, str):
+                                # Single value, use as is
+                                processed_claim[nested_field] = nested_values
+                            else:
+                                # Fallback to empty string if no valid values
+                                processed_claim[nested_field] = ""
+                        processed_claim_details.append(processed_claim)
+                    model_output[field] = processed_claim_details
+                else:
+                    # Randomly select from available values for flat fields
+                    model_output[field] = random.choice(values)
             elif isinstance(values, str):
                 # Single value, use as is
                 model_output[field] = values
@@ -233,10 +292,32 @@ def generate_model_records(model_data: Dict[str, List[str]], count: int = 1) -> 
         record = {}
         for field, values in model_data.items():
             if isinstance(values, list) and values:
-                record[field] = random.choice(values)
+                # Handle nested structures (like ClaimDetails)
+                if field == "ClaimDetails" and values and isinstance(values[0], dict):
+                    # Process nested ClaimDetails structure
+                    processed_claim_details = []
+                    for claim_detail in values:
+                        processed_claim = {}
+                        for nested_field, nested_values in claim_detail.items():
+                            if isinstance(nested_values, list) and nested_values:
+                                # Randomly select from available values
+                                processed_claim[nested_field] = random.choice(nested_values)
+                            elif isinstance(nested_values, str):
+                                # Single value, use as is
+                                processed_claim[nested_field] = nested_values
+                            else:
+                                # Fallback to empty string if no valid values
+                                processed_claim[nested_field] = ""
+                        processed_claim_details.append(processed_claim)
+                    record[field] = processed_claim_details
+                else:
+                    # Randomly select from available values for flat fields
+                    record[field] = random.choice(values)
             elif isinstance(values, str):
+                # Single value, use as is
                 record[field] = values
             else:
+                # Fallback to empty string if no valid values
                 record[field] = ""
         records.append(record)
     
@@ -282,12 +363,33 @@ def _to_choice_list(value: Any) -> List[str]:
 
 
 def _select_random_record_from_edit(edit_options: Dict[str, List[str]]) -> Dict[str, str]:
-    return {
-        "proc_cd": random.choice(edit_options["proc_cd"]),
-        "mail_id": random.choice(edit_options["mail_id"]),
-        "address": random.choice(edit_options["address"]),
-        "city": random.choice(edit_options["city"]),
-    }
+    record = {}
+    for field, values in edit_options.items():
+        if isinstance(values, list) and values:
+            # Handle nested structures (like ClaimDetails)
+            if field == "ClaimDetails" and values and isinstance(values[0], dict):
+                # Process nested ClaimDetails structure
+                processed_claim_details = []
+                for claim_detail in values:
+                    processed_claim = {}
+                    for nested_field, nested_values in claim_detail.items():
+                        if isinstance(nested_values, list) and nested_values:
+                            # Randomly select from available values
+                            processed_claim[nested_field] = random.choice(nested_values)
+                        elif isinstance(nested_values, str):
+                            # Single value, use as is
+                            processed_claim[nested_field] = nested_values
+                        else:
+                            # Fallback to empty string if no valid values
+                            processed_claim[nested_field] = ""
+                    processed_claim_details.append(processed_claim)
+                record[field] = processed_claim_details
+            else:
+                # Randomly select from available values for flat fields
+                record[field] = random.choice(values)
+        else:
+            record[field] = ""
+    return record
 
 
 def _select_random_edit_and_record(
@@ -315,12 +417,33 @@ def build_indexed_records(section_options: Dict[str, List[str]]) -> List[Dict[st
     num_records = max(lengths)
     records: List[Dict[str, str]] = []
     for idx in range(num_records):
-        record = {
-            "proc_cd": section_options["proc_cd"][idx % len(section_options["proc_cd"])],
-            "mail_id": section_options["mail_id"][idx % len(section_options["mail_id"])],
-            "address": section_options["address"][idx % len(section_options["address"])],
-            "city": section_options["city"][idx % len(section_options["city"])],
-        }
+        record = {}
+        for field, values in section_options.items():
+            if isinstance(values, list) and values:
+                # Handle nested structures (like ClaimDetails)
+                if field == "ClaimDetails" and values and isinstance(values[0], dict):
+                    # Process nested ClaimDetails structure
+                    processed_claim_details = []
+                    for claim_detail in values:
+                        processed_claim = {}
+                        for nested_field, nested_values in claim_detail.items():
+                            if isinstance(nested_values, list) and nested_values:
+                                # Use indexed selection for nested fields
+                                nested_idx = idx % len(nested_values)
+                                processed_claim[nested_field] = nested_values[nested_idx]
+                            elif isinstance(nested_values, str):
+                                # Single value, use as is
+                                processed_claim[nested_field] = nested_values
+                            else:
+                                # Fallback to empty string if no valid values
+                                processed_claim[nested_field] = ""
+                        processed_claim_details.append(processed_claim)
+                    record[field] = processed_claim_details
+                else:
+                    # Use indexed selection for flat fields (original behavior)
+                    record[field] = values[idx % len(values)]
+            else:
+                record[field] = ""
         records.append(record)
     return records
 
