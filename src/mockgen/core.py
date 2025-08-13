@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Tuple
 CONFIG_FILE = Path("user_input.json")
 MASTER_TEMPLATE_FILE = Path("master.json")
 OUTPUT_DIR = Path("mock_outputs")
-REQUIRED_FIELDS: List[str] = ["name", "mail_id", "address", "city"]
+REQUIRED_FIELDS: List[str] = ["proc_cd", "mail_id", "address", "city"]
 
 
 def ensure_config_file(path: Path, overwrite: bool = False) -> None:
@@ -18,22 +18,28 @@ def ensure_config_file(path: Path, overwrite: bool = False) -> None:
         return
     template = {
         "Model_1": {
-            "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
             "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
             "address": ["123456", "12345", "654321", "123"],
             "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
         },
         "Model_1_Positive": {
-            "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
             "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
             "address": ["123456", "12345", "654321", "123"],
             "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
         },
         "Model_1_Negative": {
-            "name": ["", "123", "@@@"],
+            "proc_cd": ["", "123", "@@@"],
             "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
             "address": ["", "!@#", "????"],
             "city": ["", "Atlantis", "12345"]
+        },
+        "Model_1_Exclusion": {
+            "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
+            "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
+            "address": ["123456", "12345", "654321", "123"],
+            "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
         }
     }
     with path.open("w", encoding="utf-8") as f:
@@ -277,7 +283,7 @@ def _to_choice_list(value: Any) -> List[str]:
 
 def _select_random_record_from_edit(edit_options: Dict[str, List[str]]) -> Dict[str, str]:
     return {
-        "name": random.choice(edit_options["name"]),
+        "proc_cd": random.choice(edit_options["proc_cd"]),
         "mail_id": random.choice(edit_options["mail_id"]),
         "address": random.choice(edit_options["address"]),
         "city": random.choice(edit_options["city"]),
@@ -310,7 +316,7 @@ def build_indexed_records(section_options: Dict[str, List[str]]) -> List[Dict[st
     records: List[Dict[str, str]] = []
     for idx in range(num_records):
         record = {
-            "name": section_options["name"][idx % len(section_options["name"])],
+            "proc_cd": section_options["proc_cd"][idx % len(section_options["proc_cd"])],
             "mail_id": section_options["mail_id"][idx % len(section_options["mail_id"])],
             "address": section_options["address"][idx % len(section_options["address"])],
             "city": section_options["city"][idx % len(section_options["city"])],

@@ -94,25 +94,25 @@ Mockup_up_data/
 ```json
 {
   "Model_1": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
   },
   "Model_1_Positive": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
   },
   "Model_1_Negative": {
-    "name": ["", "123", "@@@"],
+    "proc_cd": ["", "123", "@@@"],
     "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
     "address": ["", "!@#", "????"],
     "city": ["", "Atlantis", "12345"]
   },
   "Model_1_Exclusion": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com", "ram@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
@@ -130,7 +130,7 @@ Mockup_up_data/
     "phone": ["+1-555-0101"],
     "date_of_birth": ["1990-01-15"],
     "street_address": ["123 Main Street"],
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad"],
@@ -258,7 +258,7 @@ python -m src.mockgen.cli --help
     "phone": "+1-555-0101",
     "date_of_birth": "1990-01-15",
     "street_address": "123 Main Street",
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad",
@@ -279,7 +279,7 @@ python -m src.mockgen.cli --help
     "phone": "+1-555-0101",
     "date_of_birth": "1990-01-15",
     "street_address": "123 Main Street",
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad",

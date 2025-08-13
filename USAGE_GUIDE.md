@@ -111,7 +111,7 @@ python generate_probability_outputs.py --help
 
 The system generates data that combines:
 - **Base fields**: first_name, last_name, email, phone, etc. (from master template)
-- **Custom fields**: name, mail_id, address, city (from your user input)
+- **Custom fields**: proc_cd, mail_id, address, city (from your user input)
 - **Randomization**: Values are randomly selected from your arrays
 
 ## 🎲 Available Models

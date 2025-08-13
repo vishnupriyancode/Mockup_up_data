@@ -116,25 +116,25 @@ The system supports two formats:
 ```json
 {
   "Model_1": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
   },
   "Model_1_Positive": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
   },
   "Model_1_Negative": {
-    "name": ["", "123", "@@@"],
+    "proc_cd": ["", "123", "@@@"],
     "mail_id": ["invalid-email", "no-at-symbol", "user@invalid_domain"],
     "address": ["", "!@#", "????"],
     "city": ["", "Atlantis", "12345"]
   },
   "Model_1_Exclusion": {
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com", "ramdon@gamil.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad", "Chennai", "Kovai", "Dindigul"]
@@ -146,7 +146,7 @@ The system supports two formats:
 ```json
 {
   "Edit_1": {
-    "name": "Vishnu,Priyan",
+    "proc_cd": "Vishnu,Priyan",
     "mail_id": "Vishnupriyannatarajan@gmail.com,ramdon@gamil.com",
     "address": "123456,12345",
     "city": "Hyderabad,Chennai"
@@ -167,7 +167,7 @@ The master template provides the base structure:
     "phone": ["+1-555-0101"],
     "date_of_birth": ["1990-01-15"],
     "street_address": ["123 Main Street"],
-    "name": ["Vishnu", "Priyan", "Raja", "Raji"],
+    "proc_cd": ["Vishnu", "Priyan", "Raja", "Raji"],
     "mail_id": ["Vishnupriyannatarajan@gmail.com"],
     "address": ["123456", "12345", "654321", "123"],
     "city": ["Hyderabad"],
@@ -218,7 +218,7 @@ When using `--enhanced`, the output follows the master template structure:
     "phone": "+1-555-0101",
     "date_of_birth": "1990-01-15",
     "street_address": "123 Main Street",
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad",
@@ -235,7 +235,7 @@ When using `--enhanced`, the output follows the master template structure:
 ```json
 {
   "Model_1_Positive": {
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad"
@@ -248,13 +248,13 @@ When using `--enhanced`, the output follows the master template structure:
 {
   "Model_1_Positive": [
     {
-      "name": "Vishnu",
+      "proc_cd": "Vishnu",
       "mail_id": "Vishnupriyannatarajan@gmail.com",
       "address": "123456",
       "city": "Hyderabad"
     },
     {
-      "name": "Priyan",
+      "proc_cd": "Priyan",
       "mail_id": "ramdon@gamil.com",
       "address": "12345",
       "city": "Chennai"
@@ -267,19 +267,19 @@ When using `--enhanced`, the output follows the master template structure:
 ```json
 {
   "Model_1_Positive": {
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad"
   },
   "Model_1_Negative": {
-    "name": "",
+    "proc_cd": "",
     "mail_id": "invalid-email",
     "address": "",
     "city": ""
   },
   "Model_1_Exclusion": {
-    "name": "Vishnu",
+    "proc_cd": "Vishnu",
     "mail_id": "Vishnupriyannatarajan@gmail.com",
     "address": "123456",
     "city": "Hyderabad"
