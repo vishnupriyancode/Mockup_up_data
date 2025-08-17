@@ -18,6 +18,6 @@ dist/
 *.egg-info/
 
 # Project outputs
-generated_outputs/
+mock_outputs/
 
 

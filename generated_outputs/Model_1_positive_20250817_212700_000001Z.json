@@ -1,0 +1,71 @@
+{
+  "positive_data": {
+    "first_proc_cd": [
+      "John"
+    ],
+    "last_proc_cd": [
+      "Smith"
+    ],
+    "email": [
+      "john.smith@email.com"
+    ],
+    "phone": [
+      "+1-555-0101"
+    ],
+    "date_of_birth": [
+      "1990-01-15"
+    ],
+    "street_address": [
+      "123 Main Street"
+    ],
+    "proc_cd": [
+      "Vishnu"
+    ],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com"
+    ],
+    "address": [
+      "123456"
+    ],
+    "city": [
+      "Hyderabad"
+    ],
+    "state": [
+      "NY"
+    ],
+    "zip_code": [
+      "90210"
+    ],
+    "country": [
+      "Canada"
+    ],
+    "PRICNG_ZIP_STATE": [
+      "KL"
+    ],
+    "CLM_TYPE": [
+      "P"
+    ],
+    "SRVC_FROM_DT": [
+      "04/20/2025"
+    ],
+    "HCID": [
+      "ABCDEFGHI"
+    ],
+    "PAT_BRTH_DT": [
+      "01/01/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Mohan"
+    ],
+    "PAT_LAST_NME": [
+      "Kumar"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": "12/12/2024",
+        "proc_cd": "12345",
+        "BILL_TYPE": "OD"
+      }
+    ]
+  }
+}

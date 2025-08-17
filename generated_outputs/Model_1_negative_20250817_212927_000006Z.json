@@ -1,0 +1,71 @@
+{
+  "WGS_csbd_medicaid_negative": {
+    "first_proc_cd": [
+      "Mike"
+    ],
+    "last_proc_cd": [
+      "Williams"
+    ],
+    "email": [
+      "mike.williams@email.com"
+    ],
+    "phone": [
+      "+1-555-0104"
+    ],
+    "date_of_birth": [
+      "1992-07-10"
+    ],
+    "street_address": [
+      "321 Elm Street"
+    ],
+    "proc_cd": [
+      "Raji"
+    ],
+    "mail_id": [
+      "raja.vishnu@email.com"
+    ],
+    "address": [
+      "654321"
+    ],
+    "city": [
+      "Bangalore"
+    ],
+    "state": [
+      "TX"
+    ],
+    "zip_code": [
+      "33101"
+    ],
+    "country": [
+      "UK"
+    ],
+    "PRICNG_ZIP_STATE": [
+      "AP"
+    ],
+    "CLM_TYPE": [
+      "D"
+    ],
+    "SRVC_FROM_DT": [
+      "04/20/2025"
+    ],
+    "HCID": [
+      "ABCDE5555"
+    ],
+    "PAT_BRTH_DT": [
+      "01/03/1990"
+    ],
+    "PAT_FRST_NME": [
+      "Rajesh"
+    ],
+    "PAT_LAST_NME": [
+      "VP"
+    ],
+    "ClaimDetails": [
+      {
+        "SRVC_FROM_DT": "12/12/2024",
+        "proc_cd": "67890",
+        "BILL_TYPE": "OA"
+      }
+    ]
+  }
+}
