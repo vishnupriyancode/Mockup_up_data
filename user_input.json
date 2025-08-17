@@ -1,5 +1,83 @@
 {
   "Model_1": {
+    "first_proc_cd": [
+      "John",
+      "Jane",
+      "Mike",
+      "Sarah"
+    ],
+    "last_proc_cd": [
+      "Smith",
+      "Johnson",
+      "Williams",
+      "Brown"
+    ],
+    "email": [
+      "john.smith@email.com",
+      "jane.johnson@email.com",
+      "mike.williams@email.com",
+      "sarah.brown@email.com"
+    ],
+    "phone": [
+      "+1-555-0101",
+      "+1-555-0102",
+      "+1-555-0103",
+      "+1-555-0104"
+    ],
+    "date_of_birth": [
+      "1990-01-15",
+      "1985-03-22",
+      "1992-07-10",
+      "1988-11-05"
+    ],
+    "street_address": [
+      "123 Main Street",
+      "456 Oak Avenue",
+      "789 Pine Road",
+      "321 Elm Street"
+    ],
+    "proc_cd": [
+      "Vishnu",
+      "Priyan",
+      "Raja",
+      "Raji"
+    ],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com",
+      "priyan.raja@email.com",
+      "raja.vishnu@email.com",
+      "raji.priyan@email.com"
+    ],
+    "address": [
+      "123456",
+      "12345",
+      "654321",
+      "123"
+    ],
+    "city": [
+      "Hyderabad",
+      "Chennai",
+      "Bangalore",
+      "Mumbai"
+    ],
+    "state": [
+      "NY",
+      "CA",
+      "TX",
+      "FL"
+    ],
+    "zip_code": [
+      "10001",
+      "90210",
+      "75001",
+      "33101"
+    ],
+    "country": [
+      "United States",
+      "Canada",
+      "UK",
+      "Australia"
+    ],
     "PRICNG_ZIP_STATE": [
       "TN",
       "KL",
@@ -44,18 +122,66 @@
           "12/12/2024"
         ],
         "proc_cd": [
-          "12345",
-          "67890",
           "12394",
           "30009"
         ],
         "BILL_TYPE": [
-          "P"
+          "OA",
+          "OC", 
+          "OD"
         ]
       }
     ]
   },
   "Model_1_positive": {
+    "first_proc_cd": [
+      "John"
+    ],
+    "last_proc_cd": [
+      "Smith"
+    ],
+    "email": [
+      "john.smith@email.com"
+    ],
+    "phone": [
+      "+1-555-0101",
+      "+1-555-0102"
+    ],
+    "date_of_birth": [
+      "1990-01-15",
+      "1985-03-22"
+    ],
+    "street_address": [
+      "123 Main Street",
+      "456 Oak Avenue"
+    ],
+    "proc_cd": [
+      "Vishnu",
+      "Priyan"
+    ],
+    "mail_id": [
+      "Vishnupriyannatarajan@gmail.com"
+    ],
+    "address": [
+      "123456",
+      "12345"
+    ],
+    "city": [
+      "Hyderabad",
+      "Chennai"
+    ],
+    "state": [
+      "NY",
+      "CA"
+    ],
+    "zip_code": [
+      "10001",
+      "90210"
+    ],
+    "country": [
+      "United States",
+      "Canada"
+    ],
     "PRICNG_ZIP_STATE": [
       "TN",
       "KL"
@@ -67,7 +193,6 @@
       "04/20/2025"
     ],
     "HCID": [
-      "ABCDEFGHI",
       "ABCDEFGHI"
     ],
     "PAT_BRTH_DT": [
@@ -78,8 +203,7 @@
       "Raj"
     ],
     "PAT_LAST_NME": [
-      "Kumar",
-      "AJ"
+      "Kumar"
     ],
     "ClaimDetails": [
       {
@@ -88,17 +212,68 @@
         ],
         "proc_cd": [
           "12345",
-          "67890",
-          "12394",
-          "30009"
+          "67890"
         ],
         "BILL_TYPE": [
-          "P"
+          "OA",
+          "OC", 
+          "OD"
         ]
       }
     ]
   },
   "Model_1_negative": {
+    "first_proc_cd": [
+      "Mike",
+      "Sarah"
+    ],
+    "last_proc_cd": [
+      "Williams",
+      "Brown"
+    ],
+    "email": [
+      "mike.williams@email.com",
+      "sarah.brown@email.com"
+    ],
+    "phone": [
+      "+1-555-0103",
+      "+1-555-0104"
+    ],
+    "date_of_birth": [
+      "1992-07-10",
+      "1988-11-05"
+    ],
+    "street_address": [
+      "789 Pine Road",
+      "321 Elm Street"
+    ],
+    "proc_cd": [
+      "Raja",
+      "Raji"
+    ],
+    "mail_id": [
+      "raja.vishnu@email.com"
+    ],
+    "address": [
+      "654321",
+      "123"
+    ],
+    "city": [
+      "Bangalore",
+      "Mumbai"
+    ],
+    "state": [
+      "TX",
+      "FL"
+    ],
+    "zip_code": [
+      "75001",
+      "33101"
+    ],
+    "country": [
+      "UK",
+      "Australia"
+    ],
     "PRICNG_ZIP_STATE": [
       "AP",
       "KT"
@@ -111,20 +286,16 @@
       "04/20/2025"
     ],
     "HCID": [
-      "ABCDE5555",
-      "555DEFGHI"
+      "ABCDE5555"
     ],
     "PAT_BRTH_DT": [
-      "01/03/1990",
-      "01/04/1990"
+      "01/03/1990"
     ],
     "PAT_FRST_NME": [
-      "Rajesh",
-      "Rajeshwari"
+      "Rajesh"
     ],
     "PAT_LAST_NME": [
-      "VP",
-      "D"
+      "VP"
     ],
     "ClaimDetails": [
       {
@@ -133,17 +304,56 @@
         ],
         "proc_cd": [
           "12345",
-          "67890",
-          "12394",
-          "30009"
+          "67890"
         ],
         "BILL_TYPE": [
-          "P"
+          "OA",
+          "OC", 
+          "OD"
         ]
       }
     ]
   },
   "Model_1_exclusion": {
+    "first_proc_cd": [
+      "Sarah"
+    ],
+    "last_proc_cd": [
+      "Brown"
+    ],
+    "email": [
+      "sarah.brown@email.com"
+    ],
+    "phone": [
+      "+1-555-0104"
+    ],
+    "date_of_birth": [
+      "1988-11-05"
+    ],
+    "street_address": [
+      "321 Elm Street"
+    ],
+    "proc_cd": [
+      "Raji"
+    ],
+    "mail_id": [
+      "raji.priyan@email.com"
+    ],
+    "address": [
+      "123"
+    ],
+    "city": [
+      "Mumbai"
+    ],
+    "state": [
+      "FL"
+    ],
+    "zip_code": [
+      "33101"
+    ],
+    "country": [
+      "Australia"
+    ],
     "PRICNG_ZIP_STATE": [
       "KT"
     ],
@@ -173,10 +383,12 @@
         ],
         "proc_cd": [
           "12345",
-          "30009"
+          "30077"
         ],
         "BILL_TYPE": [
-          "P"
+          "OA",
+          "OC", 
+          "OD"
         ]
       }
     ]

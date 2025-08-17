@@ -1,0 +1,84 @@
+====================================================================================================
+SCENARIO COMBINATIONS REPORT - TABULAR FORMAT
+====================================================================================================
+Generated on: 2025-08-17 20:59:44
+
+----------------------------------------------------------------------------------------------------
+SCENARIO SUMMARY TABLE
+----------------------------------------------------------------------------------------------------
+Scenario Type        | Fields     | Combinations    | Description                                       
+----------------------------------------------------------------------------------------------------
+positive             | 10         | 8               | Valid data combinations for positive testing
+negative             | 10         | 8               | Invalid data combinations for negative testing
+exclusion            | 10         | 4               | Edge case combinations for exclusion testing
+----------------------------------------------------------------------------------------------------
+TOTAL                |            | 20              | All scenario combinations
+
+----------------------------------------------------------------------------------------------------
+FIELD VALUES BREAKDOWN BY SCENARIO TYPE
+----------------------------------------------------------------------------------------------------
+Field Name                | Positive        | Negative        | Exclusion       | Total Values
+----------------------------------------------------------------------------------------------
+CLM_TYPE                  | 1               | 2               | 2               | 5
+ClaimDetails_BILL_TYPE    | 1               | 1               | 1               | 3
+ClaimDetails_SRVC_FROM_DT | 1               | 1               | 1               | 3
+ClaimDetails_proc_cd      | 2               | 2               | 2               | 6
+HCID                      | 1               | 1               | 1               | 3
+PAT_BRTH_DT               | 1               | 1               | 1               | 3
+PAT_FRST_NME              | 2               | 1               | 1               | 4
+PAT_LAST_NME              | 1               | 1               | 1               | 3
+PRICNG_ZIP_STATE          | 2               | 2               | 1               | 5
+SRVC_FROM_DT              | 1               | 1               | 1               | 3
+
+----------------------------------------------------------------------------------------------------
+MATHEMATICAL BREAKDOWN BY SCENARIO TYPE
+----------------------------------------------------------------------------------------------------
+
+POSITIVE SCENARIO:
+--------------------------------------------------
+  PRICNG_ZIP_STATE          : 2 values
+  CLM_TYPE                  : 1 values
+  SRVC_FROM_DT              : 1 values
+  HCID                      : 1 values
+  PAT_BRTH_DT               : 1 values
+  PAT_FRST_NME              : 2 values
+  PAT_LAST_NME              : 1 values
+  ClaimDetails_SRVC_FROM_DT : 1 values
+  ClaimDetails_proc_cd      : 2 values
+  ClaimDetails_BILL_TYPE    : 1 values
+  Total Combinations        : 8
+  Formula                   : PRICNG_ZIP_STATE(2) × CLM_TYPE(1) × SRVC_FROM_DT(1) × HCID(1) × PAT_BRTH_DT(1) × PAT_FRST_NME(2) × PAT_LAST_NME(1) × ClaimDetails_SRVC_FROM_DT(1) × ClaimDetails_proc_cd(2) × ClaimDetails_BILL_TYPE(1) = 8
+
+NEGATIVE SCENARIO:
+--------------------------------------------------
+  PRICNG_ZIP_STATE          : 2 values
+  CLM_TYPE                  : 2 values
+  SRVC_FROM_DT              : 1 values
+  HCID                      : 1 values
+  PAT_BRTH_DT               : 1 values
+  PAT_FRST_NME              : 1 values
+  PAT_LAST_NME              : 1 values
+  ClaimDetails_SRVC_FROM_DT : 1 values
+  ClaimDetails_proc_cd      : 2 values
+  ClaimDetails_BILL_TYPE    : 1 values
+  Total Combinations        : 8
+  Formula                   : PRICNG_ZIP_STATE(2) × CLM_TYPE(2) × SRVC_FROM_DT(1) × HCID(1) × PAT_BRTH_DT(1) × PAT_FRST_NME(1) × PAT_LAST_NME(1) × ClaimDetails_SRVC_FROM_DT(1) × ClaimDetails_proc_cd(2) × ClaimDetails_BILL_TYPE(1) = 8
+
+EXCLUSION SCENARIO:
+--------------------------------------------------
+  PRICNG_ZIP_STATE          : 1 values
+  CLM_TYPE                  : 2 values
+  SRVC_FROM_DT              : 1 values
+  HCID                      : 1 values
+  PAT_BRTH_DT               : 1 values
+  PAT_FRST_NME              : 1 values
+  PAT_LAST_NME              : 1 values
+  ClaimDetails_SRVC_FROM_DT : 1 values
+  ClaimDetails_proc_cd      : 2 values
+  ClaimDetails_BILL_TYPE    : 1 values
+  Total Combinations        : 4
+  Formula                   : PRICNG_ZIP_STATE(1) × CLM_TYPE(2) × SRVC_FROM_DT(1) × HCID(1) × PAT_BRTH_DT(1) × PAT_FRST_NME(1) × PAT_LAST_NME(1) × ClaimDetails_SRVC_FROM_DT(1) × ClaimDetails_proc_cd(2) × ClaimDetails_BILL_TYPE(1) = 4
+
+====================================================================================================
+END OF REPORT
+====================================================================================================

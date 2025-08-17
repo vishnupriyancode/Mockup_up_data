@@ -1,0 +1,16 @@
+# Basic positive scenario generation
+python consolidated_generator.py --positive --model Model_1
+python consolidated_generator.py --positive --model Model_1 --wgs
+
+# Advanced options
+python consolidated_generator.py --positive --model Model_1 --wgs --count 10 --split
+
+# Generate all scenario types including positive
+python consolidated_generator.py --all --wgs
+
+# Generate combined output with positive scenarios
+python consolidated_generator.py --combined
+
+
+python tabular_scenario_display.py
+
